@@ -236,14 +236,14 @@
             grupoSexo.Controls.Add(radioSexoH);
             grupoSexo.Location = new Point(102, 307);
             grupoSexo.Name = "grupoSexo";
-            grupoSexo.Size = new Size(331, 43);
+            grupoSexo.Size = new Size(321, 43);
             grupoSexo.TabIndex = 23;
             grupoSexo.TabStop = false;
             // 
             // radioSexoSin
             // 
             radioSexoSin.AutoSize = true;
-            radioSexoSin.Location = new Point(231, 17);
+            radioSexoSin.Location = new Point(210, 17);
             radioSexoSin.Name = "radioSexoSin";
             radioSexoSin.Size = new Size(100, 19);
             radioSexoSin.TabIndex = 25;
@@ -254,7 +254,7 @@
             // radioSexoM
             // 
             radioSexoM.AutoSize = true;
-            radioSexoM.Location = new Point(122, 17);
+            radioSexoM.Location = new Point(115, 17);
             radioSexoM.Name = "radioSexoM";
             radioSexoM.Size = new Size(56, 19);
             radioSexoM.TabIndex = 24;
@@ -277,7 +277,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(449, 418);
+            ClientSize = new Size(456, 418);
             Controls.Add(grupoSexo);
             Controls.Add(btnLimpiar);
             Controls.Add(btnBorrar);
@@ -310,29 +310,29 @@
 
         #endregion
 
-        private Label tituloCliente;
-        private Label lblnombreCli;
-        private ErrorProvider erroresMSJ;
-        private TextBox txtNombreCli;
-        private TextBox txtFechaNaciCli;
-        private Label lblFechaNaciCli;
-        private TextBox txtDireccionCli;
-        private Label lblDireccionCli;
-        private TextBox txtTelefonoCli;
-        private Label lblTelefonoCli;
-        private TextBox txtContraseCli;
-        private Label lblContraseCli;
-        private TextBox txtCorreoCli;
-        private Label lblCorreoCli;
-        private Label lblSexoCli;
-        private Button btnLimpiar;
-        private Button btnBorrar;
-        private Button btnSeleccionar;
-        private Button btnActualizar;
-        private Button btnInsertar;
-        private GroupBox grupoSexo;
-        private RadioButton radioSexoSin;
-        private RadioButton radioSexoM;
-        private RadioButton radioSexoH;
+        internal Label tituloCliente;
+        internal Label lblnombreCli;
+        internal ErrorProvider erroresMSJ;
+        internal TextBox txtNombreCli;
+        internal TextBox txtFechaNaciCli;
+        internal Label lblFechaNaciCli;
+        internal TextBox txtDireccionCli;
+        internal Label lblDireccionCli;
+        internal TextBox txtTelefonoCli;
+        internal Label lblTelefonoCli;
+        internal TextBox txtContraseCli;
+        internal Label lblContraseCli;
+        internal TextBox txtCorreoCli;
+        internal Label lblCorreoCli;
+        internal Label lblSexoCli;
+        internal Button btnLimpiar;
+        internal Button btnBorrar;
+        internal Button btnSeleccionar;
+        internal Button btnActualizar;
+        internal Button btnInsertar;
+        internal GroupBox grupoSexo;
+        internal RadioButton radioSexoSin;
+        internal RadioButton radioSexoM;
+        internal RadioButton radioSexoH;
     }
 }
