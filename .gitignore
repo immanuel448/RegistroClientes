@@ -1,7 +1,16 @@
+# Visual Studio
 .vs/
 bin/
 obj/
 *.user
 *.suo
-*.tmp
+*.cache
 *.log
+
+# Rider
+.idea/
+
+# Archivos de compilación
+*.dll
+*.exe
+*.pdb

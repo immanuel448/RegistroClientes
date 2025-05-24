@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             tituloCliente = new Label();
             lblnombreCli = new Label();
-            errorProvider1 = new ErrorProvider(components);
+            erroresMSJ = new ErrorProvider(components);
             txtNombreCli = new TextBox();
             txtCorreoCli = new TextBox();
             lblCorreoCli = new Label();
@@ -53,7 +53,7 @@
             radioSexoSin = new RadioButton();
             radioSexoM = new RadioButton();
             radioSexoH = new RadioButton();
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)erroresMSJ).BeginInit();
             grupoSexo.SuspendLayout();
             SuspendLayout();
             // 
@@ -77,9 +77,9 @@
             lblnombreCli.TabIndex = 1;
             lblnombreCli.Text = "Nombre:";
             // 
-            // errorProvider1
+            // erroresMSJ
             // 
-            errorProvider1.ContainerControl = this;
+            erroresMSJ.ContainerControl = this;
             // 
             // txtNombreCli
             // 
@@ -191,6 +191,7 @@
             btnInsertar.TabIndex = 15;
             btnInsertar.Text = "Insertar";
             btnInsertar.UseVisualStyleBackColor = true;
+            btnInsertar.Click += btnInsertar_Click;
             // 
             // btnActualizar
             // 
@@ -299,7 +300,8 @@
             Controls.Add(tituloCliente);
             Name = "Form1";
             Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)erroresMSJ).EndInit();
             grupoSexo.ResumeLayout(false);
             grupoSexo.PerformLayout();
             ResumeLayout(false);
@@ -310,7 +312,7 @@
 
         private Label tituloCliente;
         private Label lblnombreCli;
-        private ErrorProvider errorProvider1;
+        private ErrorProvider erroresMSJ;
         private TextBox txtNombreCli;
         private TextBox txtFechaNaciCli;
         private Label lblFechaNaciCli;

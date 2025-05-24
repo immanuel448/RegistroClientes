@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Controlador\" />
-    <Folder Include="Modelo\" />
   </ItemGroup>
 
 </Project>
