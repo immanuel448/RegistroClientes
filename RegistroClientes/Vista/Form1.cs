@@ -43,6 +43,8 @@ namespace RegistroClientes
         // Se obtiene los datos y se guardan en la clase del modelo
         private DatosClienteRepo obtenerDatos()
         {
+            erroresMSJ.Clear();
+
             var datosCliente = new DatosClienteRepo();
             datosCliente.nombre = txtNombreCli.Text;
             datosCliente.correo = txtCorreoCli.Text;
