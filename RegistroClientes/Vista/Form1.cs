@@ -93,5 +93,32 @@ namespace RegistroClientes
         {
             MessageBox.Show(mensajeRecibido);
         }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarControles(this);
+        }
+
+        // Método para limpiar todos los controles, genérico
+        private void LimpiarControles(Control control)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (c is TextBox txt)
+                    txt.Clear();
+                else if (c is ComboBox combo)
+                    combo.SelectedIndex = -1;
+                else if (c is CheckBox check)
+                    check.Checked = false;
+                else if (c is RadioButton radio)
+                    radio.Checked = false;
+                else if (c is DateTimePicker dtp)
+                    dtp.Value = DateTime.Now;
+
+                // Si el control tiene controles hijos (como un Panel o GroupBox)
+                if (c.HasChildren)
+                    LimpiarControles(c);
+            }
+        }
     }
 }

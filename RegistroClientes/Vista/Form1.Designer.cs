@@ -228,6 +228,7 @@
             btnLimpiar.TabIndex = 19;
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
             // 
             // grupoSexo
             // 
@@ -277,7 +278,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(456, 418);
+            AutoValidate = AutoValidate.EnablePreventFocusChange;
+            ClientSize = new Size(467, 418);
             Controls.Add(grupoSexo);
             Controls.Add(btnLimpiar);
             Controls.Add(btnBorrar);
@@ -298,8 +300,10 @@
             Controls.Add(txtNombreCli);
             Controls.Add(lblnombreCli);
             Controls.Add(tituloCliente);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Registro Clientes";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)erroresMSJ).EndInit();
             grupoSexo.ResumeLayout(false);
