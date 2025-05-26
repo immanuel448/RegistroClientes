@@ -7,6 +7,7 @@ namespace RegistroClientes.Controlador
 {
     internal class FormController
     {
+        //se crea un objeto de la vista, ya que el controlador interactúa directamente con esta capa
         private Form1 _vista;
 
         public FormController(Form1 vista)
@@ -14,44 +15,48 @@ namespace RegistroClientes.Controlador
             _vista = vista;
         }
 
-        public void ValidarYProcesarDatos(DatosClienteRepo data)
+        public void ValidarYProcesarDatos(DatosClienteRepo datosDelFormulario)
         {
-            if (data.EsValido(out var errores))
+            if (datosDelFormulario.EsValido(out var erroresAlValidar))
             {
+                //sin errores
                 _vista.Mensaje("Se ha procesado correctamente.");
             }
             else
             {
+                //con  errores
                 var erroresDict = new Dictionary<Control, string>();
 
-                foreach (var error in errores)
+                foreach (var error in erroresAlValidar)
                 {
+                    //se concatenan TODOS los mensajes para cada ciclo
+                    string mensajeUnido = string.Join("\n", error.Value);
                     switch (error.Key)
                     {
                         case "nombre":
-                            erroresDict[_vista.txtNombreCli] = error.Value;
+                            erroresDict[_vista.txtNombreCli] = mensajeUnido;
                             break;
                         case "correo":
-                            erroresDict[_vista.txtCorreoCli] = error.Value;
+                            erroresDict[_vista.txtCorreoCli] = mensajeUnido;
                             break;
                         case "contrasenha":
-                            erroresDict[_vista.txtContraseCli] = error.Value;
+                            erroresDict[_vista.txtContraseCli] = mensajeUnido;
                             break;
                         case "telefono":
-                            erroresDict[_vista.txtTelefonoCli] = error.Value;
+                            erroresDict[_vista.txtTelefonoCli] = mensajeUnido;
                             break;
                         case "direccion":
-                            erroresDict[_vista.txtDireccionCli] = error.Value;
+                            erroresDict[_vista.txtDireccionCli] = mensajeUnido;
                             break;
                         case "fechaNaci":
-                            erroresDict[_vista.txtFechaNaciCli] = error.Value;
+                            erroresDict[_vista.txtFechaNaciCli] = mensajeUnido;
                             break;
                         case "sexo":
-                            erroresDict[_vista.grupoSexo] = error.Value;
+                            erroresDict[_vista.grupoSexo] = mensajeUnido;
                             break;
                     }
                 }
-
+                //se insertan los errores en las áreas correspondientes
                 _vista.MostrarErrores(erroresDict);
             }
         }

@@ -24,20 +24,8 @@ namespace RegistroClientes
         private void btnInsertar_Click(object sender, EventArgs e)
         {
             var datosCliente = obtenerDatos();  // Obtener los datos del formulario
-            Mostrar(datosCliente);//eeee pruebita
+            //Mostrar(datosCliente);//eeee pruebita
             _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
-        }
-
-        // Método para mostrar errores con el ErrorProvider
-        public void MostrarErrores(Dictionary<Control, string> errores)
-        {
-            erroresMSJ.Clear();  // Limpiamos los errores previos
-
-            foreach (var error in errores)
-            {
-                // Mostramos el error en el control correspondiente
-                erroresMSJ.SetError(error.Key, error.Value);
-            }
         }
 
         // Se obtiene los datos y se guardan en la clase del modelo
@@ -55,14 +43,8 @@ namespace RegistroClientes
             DateTime fecha;
             if (DateTime.TryParse(txtFechaNaciCli.Text, out fecha))
             {
-                erroresMSJ.SetError(txtFechaNaciCli, ""); // Limpia el error si es válido
                 datosCliente.fechaNaci = fecha;
             }
-            else
-            {
-                erroresMSJ.SetError(txtFechaNaciCli, "Fecha no válida");
-            }
-
             if (radioSexoH.Checked)
             {
                 datosCliente.sexo = "Hombre";
@@ -77,7 +59,7 @@ namespace RegistroClientes
             }
             else
             {
-                datosCliente.sexo = "No ha seleccionado nada";
+                datosCliente.sexo = null;
             }
 
             return datosCliente;
@@ -93,6 +75,18 @@ namespace RegistroClientes
                 $"direccion {datosCliente.direccion}\n" +
                 $"sexo {datosCliente.sexo}\n" +
                 $"fecha {datosCliente.fechaNaci}\n");
+        }
+
+        // Método para mostrar errores con el ErrorProvider
+        public void MostrarErrores(Dictionary<Control, string> errores)
+        {
+            erroresMSJ.Clear();  // Limpiamos los errores previos
+
+            foreach (var error in errores)
+            {
+                // Mostramos el error en el control correspondiente
+                erroresMSJ.SetError(error.Key, error.Value);
+            }
         }
 
         public void Mensaje(string mensajeRecibido)
