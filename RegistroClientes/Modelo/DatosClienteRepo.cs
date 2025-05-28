@@ -5,12 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Text.RegularExpressions;
+using Microsoft.Data.SqlClient;
 
 
 namespace RegistroClientes.Modelo
 {
     internal class DatosClienteRepo
     {
+        //hay que eliminar estas propieddades para hacer el cambio a la nueva clase creada
         public int id { get; set; }
         public string nombre { get; set; }
         public string correo { get; set; }
