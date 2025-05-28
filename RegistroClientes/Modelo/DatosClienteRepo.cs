@@ -1,9 +1,11 @@
 ﻿// Modelo
+using System.IO;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Text.RegularExpressions;
+
 
 namespace RegistroClientes.Modelo
 {
@@ -129,6 +131,8 @@ namespace RegistroClientes.Modelo
             return configuration.GetConnectionString("MiConexionSQL");
         }
 
+
+        //esto iba en elmain eeeeeeeeeeeeeeeeeeeeeeeeee
         private static void Seleccionar(string CadenaConexion)
         {
             var idsParaBuscar = new List<int>() { 1, 2, 3, 4 };
@@ -149,12 +153,15 @@ namespace RegistroClientes.Modelo
             }
         }
 
+        //esto iba en elmain eeeeeeeeeeeeeeeeeeeeeeeeee
+
         private static void Insertar(string CadenaConexion, string nombreDato)
         {
             //devuelve un string
             var resultados = controller.InsertarDatos(CadenaConexion, nombreDato, 15, false);
             Console.WriteLine(resultados);
         }
+        //esto iba en elmain eeeeeeeeeeeeeeeeeeeeeeeeee
 
         private static void Actualizar(string CadenaConexion)
         {
@@ -162,12 +169,87 @@ namespace RegistroClientes.Modelo
             var resultados = controller.ActualizarDatos(CadenaConexion, "jeje", 50, 15);
             Console.WriteLine(resultados);
         }
+        //esto iba en elmain eeeeeeeeeeeeeeeeeeeeeeeeee
 
         private static void Borrar(string CadenaConexion)
         {
             //devuelve un string
             var resultados = controller.BorrarDatos(CadenaConexion, 5);
             Console.WriteLine(resultados);
+        }
+
+
+
+
+
+
+        //método exclusivo para seleccionar datos de la BD
+        public List<DatosMiTabla> Seleccionar(string datosBD, string instruccion, SqlParameter[] parametros)
+        {
+            var resultados = new List<DatosMiTabla>();
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(datosBD))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand(instruccion, conexion))
+                    {
+                        comando.Parameters.AddRange(parametros);
+
+                        using (SqlDataReader reader = comando.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    int identificador = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+                                    string nombre = reader.IsDBNull(1) ? "vacío" : reader.GetString(1);
+                                    int edad = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
+                                    bool activo = reader.IsDBNull(3) ? false : reader.GetBoolean(3);
+                                    resultados.Add(new DatosMiTabla(identificador, nombre, edad, activo));
+                                }
+                            }
+                            else
+                            {
+                                resultados.Add(new DatosMiTabla(errores: "No se encontraron datos."));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                resultados.Add(new DatosMiTabla(errores: $"Error: {ex.Message}"));
+            }
+
+            return resultados;
+        }
+
+        //Método común para Create, Update y Delete
+        public string Modificar_guardar(string accion, string datosBD, string instruccion, SqlParameter[] parametros)
+        {
+            string descripcion = null;
+
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(datosBD))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand(instruccion, conexion))
+                    {
+                        comando.Parameters.AddRange(parametros);
+
+                        int resultadoConsulta = comando.ExecuteNonQuery();
+
+                        return resultadoConsulta > 0 ? $"Éxito al {accion}" : $"No realizó ninguna acción al intentar {accion}";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                descripcion = $"Error: {ex.Message}";
+            }
+            return descripcion;
         }
     }
 }
