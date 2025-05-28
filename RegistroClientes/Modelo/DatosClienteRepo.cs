@@ -1,12 +1,15 @@
 ﻿// Modelo
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text.RegularExpressions;
 
 namespace RegistroClientes.Modelo
 {
     internal class DatosClienteRepo
     {
+        public int id { get; set; }
         public string nombre { get; set; }
         public string correo { get; set; }
         public string contrasenha { get; set; }
@@ -15,13 +18,16 @@ namespace RegistroClientes.Modelo
         public DateTime fechaNaci { get; set; }
         public string sexo { get; set; }
         public bool activo { get; set; }
-        public string comentarios { get; set; }
+        public string accion { get; set; }
 
         public bool EsValido(out Dictionary<string, List <string>> errores)
         {
             //validaciones --------------------------------------
             errores = new Dictionary<string, List<string>>();
             List<string> erroresGenerales = new List<string>();
+
+            //id
+
 
             //nombre
             if (string.IsNullOrEmpty(nombre))
@@ -108,6 +114,60 @@ namespace RegistroClientes.Modelo
 
             // si hay errores (false) donde se invocó este método van a obtener un diccionario con los errores
             return errores.Count == 0;
+        }
+
+        public string datosBD()
+        {
+            // Construir configuración para leer appsettings.json
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            IConfiguration configuration = builder.Build();
+
+            // Obtener cadena de conexión desde el archivo
+            return configuration.GetConnectionString("MiConexionSQL");
+        }
+
+        private static void Seleccionar(string CadenaConexion)
+        {
+            var idsParaBuscar = new List<int>() { 1, 2, 3, 4 };
+            //se usa un método del objeto creado, devuelve un objeto que contiene los resultados
+            var resultados = controller.SeleccionarDatos(CadenaConexion, idsParaBuscar);
+            int contar = 1;
+            //con esto se presentan los resultados
+            foreach (var item in resultados)
+            {
+                if (item.Errores == null)
+                {
+                    Console.WriteLine($"\n-------------------- \n El dato número {contar++} es:\n ID: {item.Identificador} \n Nombre: {item.Nombre},\n Edad: {item.Edad},\n Activo: {item.Activo}");
+                }
+                else
+                {
+                    Console.WriteLine("!!! " + item.Errores);
+                }
+            }
+        }
+
+        private static void Insertar(string CadenaConexion, string nombreDato)
+        {
+            //devuelve un string
+            var resultados = controller.InsertarDatos(CadenaConexion, nombreDato, 15, false);
+            Console.WriteLine(resultados);
+        }
+
+        private static void Actualizar(string CadenaConexion)
+        {
+            //devuelve un string
+            var resultados = controller.ActualizarDatos(CadenaConexion, "jeje", 50, 15);
+            Console.WriteLine(resultados);
+        }
+
+        private static void Borrar(string CadenaConexion)
+        {
+            //devuelve un string
+            var resultados = controller.BorrarDatos(CadenaConexion, 5);
+            Console.WriteLine(resultados);
         }
     }
 }
