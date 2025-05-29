@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RegistroClientes.Modelo
 {
-    internal class DatosClientes
+    public class DatosClientes
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
@@ -18,8 +18,9 @@ namespace RegistroClientes.Modelo
         public string Sexo { get; set; }
         public bool Activo { get; set; }
         public string Accion { get; set; }
+        public string Errores { get; set; }
 
-        internal DatosClientes(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = "")
+        protected DatosClientes(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = "", string errores = null)
         {
             Id = id;
             Nombre = nombre;
@@ -31,6 +32,7 @@ namespace RegistroClientes.Modelo
             Sexo = sexo;
             Activo = activo;
             Accion = accion;
+            Errores = errores;
         }
     }
 }
