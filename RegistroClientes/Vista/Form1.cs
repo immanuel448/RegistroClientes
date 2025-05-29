@@ -24,57 +24,57 @@ namespace RegistroClientes
         private void btnInsertar_Click(object sender, EventArgs e)
         {
             var datosCliente = obtenerDatos();  // Obtener los datos del formulario
-            //Mostrar(datosCliente);//eeee pruebita
+            Mostrar(datosCliente);//eeee pruebita
             _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
         }
 
         // Se obtiene los datos y se guardan en la clase del modelo
-        private DatosClienteRepo obtenerDatos()
+        private DatosClienteMetodos obtenerDatos()
         {
             erroresMSJ.Clear();
 
-            var datosCliente = new DatosClienteRepo();
-            datosCliente.nombre = txtNombreCli.Text;
-            datosCliente.correo = txtCorreoCli.Text;
-            datosCliente.contrasenha = txtContraseCli.Text;
-            datosCliente.telefono = txtTelefonoCli.Text;
-            datosCliente.direccion = txtDireccionCli.Text;
+            var datosCliente = new DatosClienteMetodos();
+            datosCliente.Nombre = txtNombreCli.Text;
+            datosCliente.Correo = txtCorreoCli.Text;
+            datosCliente.Contrasenha = txtContraseCli.Text;
+            datosCliente.Telefono = txtTelefonoCli.Text;
+            datosCliente.Direccion = txtDireccionCli.Text;
 
             DateTime fecha;
             if (DateTime.TryParse(txtFechaNaciCli.Text, out fecha))
             {
-                datosCliente.fechaNaci = fecha;
+                datosCliente.FechaNaci = fecha;
             }
             if (radioSexoH.Checked)
             {
-                datosCliente.sexo = "Hombre";
+                datosCliente.Sexo = "Hombre";
             }
             else if (radioSexoM.Checked)
             {
-                datosCliente.sexo = "Mujer";
+                datosCliente.Sexo = "Mujer";
             }
             else if (radioSexoSin.Checked)
             {
-                datosCliente.sexo = "No especificado";
+                datosCliente.Sexo = "No especificado";
             }
             else
             {
-                datosCliente.sexo = null;
+                datosCliente.Sexo = null;
             }
 
             return datosCliente;
         }
 
         //eeeeee este método es una pruebita
-        private void Mostrar(DatosClienteRepo datosCliente)
+        private void Mostrar(DatosClientes datosCliente)
         {
-            MessageBox.Show($"nombre {datosCliente.nombre}\n" +
-                $"correo {datosCliente.correo}\n" +
-                $"contrasenha {datosCliente.contrasenha}\n" +
-                $"telefono {datosCliente.telefono}\n" +
-                $"direccion {datosCliente.direccion}\n" +
-                $"sexo {datosCliente.sexo}\n" +
-                $"fecha {datosCliente.fechaNaci}\n");
+            MessageBox.Show($"nombre {datosCliente.Nombre}\n" +
+                $"correo {datosCliente.Correo}\n" +
+                $"contrasenha {datosCliente.Contrasenha}\n" +
+                $"telefono {datosCliente.Telefono}\n" +
+                $"direccion {datosCliente.Direccion}\n" +
+                $"sexo {datosCliente.Sexo}\n" +
+                $"fecha {datosCliente.FechaNaci}\n");
         }
 
         // Método para mostrar errores con el ErrorProvider
@@ -102,6 +102,7 @@ namespace RegistroClientes
         // Método para limpiar todos los controles, genérico
         private void LimpiarControles(Control control)
         {
+            erroresMSJ.Clear();
             foreach (Control c in control.Controls)
             {
                 if (c is TextBox txt)
