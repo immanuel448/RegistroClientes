@@ -35,6 +35,13 @@ namespace RegistroClientes
             _controller.ValidarYProcesarDatos(datosCliente);
         }
 
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            var datosCliente = obtenerDatos("actualizar");  // Obtener los datos del formulario
+            Mostrar(datosCliente);//eeee pruebita
+            _controller.RellenarVista(datosCliente);  // Pasamos los datos al controlador para validación
+        }
+
         // Se obtiene los datos y se guardan en la clase del modelo
         private DatosClienteMetodos obtenerDatos(string accion)
         {
@@ -62,6 +69,7 @@ namespace RegistroClientes
             {
                 datosCliente.FechaNaci = fecha;
             }
+
             if (radioSexoH.Checked)
             {
                 datosCliente.Sexo = "Hombre";
@@ -93,7 +101,7 @@ namespace RegistroClientes
                 $"telefono {datosCliente.Telefono}\n" +
                 $"direccion {datosCliente.Direccion}\n" +
                 $"sexo {datosCliente.Sexo}\n" +
-                $"fecha {datosCliente.FechaNaci}\n");
+                $"fecha {datosCliente.FechaNaci}\n" +
                 $"accion {datosCliente.Accion}\n");
         }
 
@@ -141,7 +149,5 @@ namespace RegistroClientes
                     LimpiarControles(c);
             }
         }
-
-
     }
 }

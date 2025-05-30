@@ -19,6 +19,29 @@ namespace RegistroClientes.Controlador
             _repositorio = new DatosClienteMetodos();
         }
 
+        public void RellenarVista(DatosClienteMetodos datosRecibidos)
+        {
+            _vista.txtID.Text = "eee" + datosRecibidos.Id.ToString();
+            _vista.txtNombreCli.Text = "eee" + datosRecibidos.Nombre.ToString();
+            _vista.txtCorreoCli.Text = "eee" + datosRecibidos.Correo.ToString();
+            _vista.txtContraseCli.Text = "eee" + datosRecibidos.Contrasenha.ToString();
+            _vista.txtTelefonoCli.Text = "eee" + datosRecibidos.Telefono.ToString();
+            _vista.txtDireccionCli.Text = "eee" + datosRecibidos.Direccion.ToString();
+            _vista.txtFechaNaciCli.Text = "eee" + datosRecibidos.FechaNaci.ToString();
+            if (datosRecibidos.Sexo == "Hombre")
+            {
+                _vista.radioSexoH.Checked = true;
+            }
+            else if (datosRecibidos.Sexo == "Mujer")
+            {
+                _vista.radioSexoM.Checked = true;
+            }
+            else if (datosRecibidos.Sexo == "No especificado")
+            {
+                _vista.radioSexoSin.Checked = true;
+            }
+        }
+
         public void ValidarYProcesarDatos(DatosClienteMetodos datosDelFormulario)
         {
             //si hay errores los muestra en la vista
@@ -26,6 +49,8 @@ namespace RegistroClientes.Controlador
             {
                 //sin errores eeeee quitar esto
                 _vista.Mensaje("Se ha procesado correctamente.");
+
+                //PROCESAR TODAS LAS LLAMADAS A LA BD
                 switch (datosDelFormulario.Accion)
                 {
                     case "buscar":
@@ -33,7 +58,9 @@ namespace RegistroClientes.Controlador
                         {
                             new SqlParameter("@id", datosDelFormulario.Id)
                         };
-                        datosDelFormulario.Seleccionar(datosDelFormulario.datosBD(),"SELECT * FROM miTabla WHERE id = @id", parametros);
+                        //se obtiene un objeto de los datos contenidos en la BD
+                        var resultadoBD = datosDelFormulario.Seleccionar(datosDelFormulario.datosBD(),"SELECT * FROM miTabla WHERE id = @id", parametros);
+                        //colocar los datos recibidos en la vista
                         break;
                 }
             }
@@ -115,6 +142,7 @@ namespace RegistroClientes.Controlador
 
 
         // Seleccionar Datos, aquí no se usa el método "EjecutarOperacion"
+        /*
         public List<DatosClienteMetodos> SeleccionarDatos(string cadenaConexion, List<int> identificadores)
         {
             try
@@ -142,7 +170,7 @@ namespace RegistroClientes.Controlador
                 resultados.Add(new DatosClienteMetodos(errores: $"Error al seleccionar {ex.Message}"));
                 return resultados;
             }
-        }
+        }*/
 
         // Insertar Datos
         public string InsertarDatos(string cadenaConexion, string nombre, int edad, bool activo)

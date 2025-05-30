@@ -136,9 +136,11 @@ namespace RegistroClientes.Modelo
         //método exclusivo para seleccionar datos de la BD
         //eeeeeeeeeeeee no tengo certeza con la clase que se devuelve èsta es el padre
 
-        public List<DatosClienteMetodos> Seleccionar(string datosBD, string instruccion, SqlParameter[] parametros)
+        //public List<DatosClienteMetodos> Seleccionar(string datosBD, string instruccion, SqlParameter[] parametros)
+
+        public DatosClienteMetodos Seleccionar(string datosBD, string instruccion, SqlParameter[] parametros)
         {
-            var resultados = new List<DatosClienteMetodos>();
+            var resultados = new DatosClienteMetodos();
             try
             {
                 using (SqlConnection conexion = new SqlConnection(datosBD))
@@ -154,22 +156,21 @@ namespace RegistroClientes.Modelo
                             {
                                 while (reader.Read())
                                 {
-                                    //hay que cambiar todos los datos
-                                    int id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
-                                    string nombre = reader.IsDBNull(1) ? "vacío" : reader.GetString(1);
-                                    string correo = reader.IsDBNull(2) ? "vacío" : reader.GetString(2);
-                                    string contrasenha = reader.IsDBNull(3) ? "vacío" : reader.GetString(3);
-                                    string telefono= reader.IsDBNull(4) ? "vacío" : reader.GetString(4);
-                                    string direccion = reader.IsDBNull(5) ? "vacío" : reader.GetString(5);
-                                    DateTime fechaNacimiento = reader.IsDBNull(6) ? default : reader.GetDateTime(6);
-                                    string sexo = reader.IsDBNull(7) ? "vacío" : reader.GetString(7);
-                                    bool activo = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
-
+                                    //se guradan los datos
+                                    resultados.Id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+                                    resultados.Nombre = reader.IsDBNull(1) ? "vacío" : reader.GetString(1);
+                                    resultados.Correo = reader.IsDBNull(2) ? "vacío" : reader.GetString(2);
+                                    resultados.Contrasenha = reader.IsDBNull(3) ? "vacío" : reader.GetString(3);
+                                    resultados.Telefono = reader.IsDBNull(4) ? "vacío" : reader.GetString(4);
+                                    resultados.Direccion = reader.IsDBNull(5) ? "vacío" : reader.GetString(5);
+                                    resultados.FechaNaci = reader.IsDBNull(6) ? default : reader.GetDateTime(6);
+                                    resultados.Sexo = reader.IsDBNull(7) ? "vacío" : reader.GetString(7);
+                                    resultados.Activo = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
                                 }
                             }
                             else
                             {
-                                resultados.Add(new DatosClienteMetodos(errores: "No se encontraron datos."));
+                                resultados.Errores = "No se encontraron datos.";
                             }
                         }
                     }
@@ -177,9 +178,8 @@ namespace RegistroClientes.Modelo
             }
             catch (Exception ex)
             {
-                resultados.Add(new DatosClienteMetodos(errores: $"Error: {ex.Message}"));
+                resultados.Errores = $"Error: {ex.Message}";
             }
-
             return resultados;
         }
 

@@ -203,6 +203,7 @@
             btnActualizar.TabIndex = 16;
             btnActualizar.Text = "Actualizar";
             btnActualizar.UseVisualStyleBackColor = true;
+            btnActualizar.Click += btnActualizar_Click;
             // 
             // btnBuscar
             // 
