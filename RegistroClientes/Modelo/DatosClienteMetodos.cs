@@ -15,15 +15,21 @@ namespace RegistroClientes.Modelo
 
         internal DatosClienteMetodos(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = "", string errores = null) : base (id, nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo, accion, errores){} 
 
-        public bool EsValido(out Dictionary<string, List <string>> errores)
+        public bool EsValido(out Dictionary<string, List <string>> errores, bool pedirID = false)
         {
             //validaciones --------------------------------------
             errores = new Dictionary<string, List<string>>();
             List<string> erroresGenerales = new List<string>();
 
-
-            //id eeeeee falta
-
+            //id
+            if (pedirID == true)
+            {
+                if (Id <= 0)
+                {
+                    errores["id"] = new List<string> { "El Id no es válido." };
+                }
+                    return errores.Count == 0;
+            }
 
             //nombre
             if (string.IsNullOrEmpty(Nombre))
@@ -149,11 +155,16 @@ namespace RegistroClientes.Modelo
                                 while (reader.Read())
                                 {
                                     //hay que cambiar todos los datos
-                                    int identificador = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+                                    int id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
                                     string nombre = reader.IsDBNull(1) ? "vacío" : reader.GetString(1);
-                                    int edad = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
-                                    bool activo = reader.IsDBNull(3) ? false : reader.GetBoolean(3);
-                                    resultados.Add(new DatosClienteMetodos(identificador, nombre, edad, activo));
+                                    string correo = reader.IsDBNull(2) ? "vacío" : reader.GetString(2);
+                                    string contrasenha = reader.IsDBNull(3) ? "vacío" : reader.GetString(3);
+                                    string telefono= reader.IsDBNull(4) ? "vacío" : reader.GetString(4);
+                                    string direccion = reader.IsDBNull(5) ? "vacío" : reader.GetString(5);
+                                    DateTime fechaNacimiento = reader.IsDBNull(6) ? default : reader.GetDateTime(6);
+                                    string sexo = reader.IsDBNull(7) ? "vacío" : reader.GetString(7);
+                                    bool activo = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
+
                                 }
                             }
                             else

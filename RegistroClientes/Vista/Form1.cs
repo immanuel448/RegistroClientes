@@ -23,17 +23,34 @@ namespace RegistroClientes
 
         private void btnInsertar_Click(object sender, EventArgs e)
         {
-            var datosCliente = obtenerDatos();  // Obtener los datos del formulario
+            var datosCliente = obtenerDatos("insertar");  // Obtener los datos del formulario
             Mostrar(datosCliente);//eeee pruebita
             _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
         }
 
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            var datosCliente = obtenerDatos("Buscar");  // Obtener los datos del formulario
+            Mostrar(datosCliente);//eeee pruebita
+            _controller.ValidarYProcesarDatos(datosCliente);
+        }
+
         // Se obtiene los datos y se guardan en la clase del modelo
-        private DatosClienteMetodos obtenerDatos()
+        private DatosClienteMetodos obtenerDatos(string accion)
         {
             erroresMSJ.Clear();
-
             var datosCliente = new DatosClienteMetodos();
+
+            int id;
+            if (int.TryParse(txtID.Text, out id))
+            {
+                datosCliente.Id = id;
+                //se obtiene el dato
+            }
+            else
+            {
+                erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
+            }
             datosCliente.Nombre = txtNombreCli.Text;
             datosCliente.Correo = txtCorreoCli.Text;
             datosCliente.Contrasenha = txtContraseCli.Text;
@@ -61,6 +78,7 @@ namespace RegistroClientes
             {
                 datosCliente.Sexo = null;
             }
+            datosCliente.Accion = accion;
 
             return datosCliente;
         }
@@ -68,13 +86,15 @@ namespace RegistroClientes
         //eeeeee este método es una pruebita
         private void Mostrar(DatosClientes datosCliente)
         {
-            MessageBox.Show($"nombre {datosCliente.Nombre}\n" +
+            MessageBox.Show($"id {datosCliente.Id}\n" +
+                $"nombre {datosCliente.Nombre}\n" +
                 $"correo {datosCliente.Correo}\n" +
                 $"contrasenha {datosCliente.Contrasenha}\n" +
                 $"telefono {datosCliente.Telefono}\n" +
                 $"direccion {datosCliente.Direccion}\n" +
                 $"sexo {datosCliente.Sexo}\n" +
                 $"fecha {datosCliente.FechaNaci}\n");
+                $"accion {datosCliente.Accion}\n");
         }
 
         // Método para mostrar errores con el ErrorProvider
@@ -121,5 +141,7 @@ namespace RegistroClientes
                     LimpiarControles(c);
             }
         }
+
+
     }
 }

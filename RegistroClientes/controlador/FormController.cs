@@ -21,14 +21,26 @@ namespace RegistroClientes.Controlador
 
         public void ValidarYProcesarDatos(DatosClienteMetodos datosDelFormulario)
         {
+            //si hay errores los muestra en la vista
             if (datosDelFormulario.EsValido(out var erroresAlValidar))
             {
-                //sin errores
+                //sin errores eeeee quitar esto
                 _vista.Mensaje("Se ha procesado correctamente.");
+                switch (datosDelFormulario.Accion)
+                {
+                    case "buscar":
+                        SqlParameter [] parametros = new SqlParameter[]
+                        {
+                            new SqlParameter("@id", datosDelFormulario.Id)
+                        };
+                        datosDelFormulario.Seleccionar(datosDelFormulario.datosBD(),"SELECT * FROM miTabla WHERE id = @id", parametros);
+                        break;
+                }
             }
             else
             {
-                //con  errores
+                //si el clic es en buscar no mandar errrores eeeeeeeeeee
+                //procesar errore en la vista
                 var erroresDict = new Dictionary<Control, string>();
 
                 foreach (var error in erroresAlValidar)
@@ -37,6 +49,9 @@ namespace RegistroClientes.Controlador
                     string mensajeUnido = string.Join("\n", error.Value);
                     switch (error.Key)
                     {
+                        case "id":
+                            erroresDict[_vista.txtID] = mensajeUnido;
+                            break;
                         case "nombre":
                             erroresDict[_vista.txtNombreCli] = mensajeUnido;
                             break;
