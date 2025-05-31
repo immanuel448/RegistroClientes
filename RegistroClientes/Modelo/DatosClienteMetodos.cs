@@ -13,109 +13,117 @@ namespace RegistroClientes.Modelo
     public class DatosClienteMetodos : DatosClientes
     {
 
-        internal DatosClienteMetodos(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = "", string errores = null) : base (id, nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo, accion, errores){} 
+        internal DatosClienteMetodos(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = "", string errores = null) : base (id, nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo, accion, errores){}
 
-        public bool EsValido(out Dictionary<string, List <string>> errores, bool pedirID = false)
+        public bool EsValido(out Dictionary<string, List<string>> errores, string accion)
         {
-            //validaciones --------------------------------------
             errores = new Dictionary<string, List<string>>();
             List<string> erroresGenerales = new List<string>();
 
-            //id
-            if (pedirID == true)
+            var accionesValidas = new[] { "Buscar", "Insertar", "Borrar", "Actualizar" };
+            if (!accionesValidas.Contains(accion))
+            {
+                errores["accion"] = new List<string> { $"La acción '{accion}' no es válida." };
+                return false;
+            }
+
+            // Validaciones según acción
+            if (accion == "Buscar" || accion == "Borrar")
             {
                 if (Id <= 0)
                 {
                     errores["id"] = new List<string> { "El Id no es válido." };
                 }
-                    return errores.Count == 0;
             }
 
-            //nombre
-            if (string.IsNullOrEmpty(Nombre))
+            if (accion == "Insertar" || accion == "Actualizar")
             {
-                erroresGenerales.Add("El nombre es obligatorio.");
-            }
-            if (Nombre.Length < 3)
-            {
-                erroresGenerales.Add("El nombre debe de tener mínimo 3 caracteres");
-            }
-            //se colocan en la lista para regresar
-            if(erroresGenerales.Count > 0) errores["nombre"] = new List<string>(erroresGenerales);
+                // nombre
+                if (string.IsNullOrEmpty(Nombre))
+                {
+                    erroresGenerales.Add("El nombre es obligatorio.");
+                }
+                if (!string.IsNullOrEmpty(Nombre) && Nombre.Length < 3)
+                {
+                    erroresGenerales.Add("El nombre debe tener mínimo 3 caracteres");
+                }
+                if (erroresGenerales.Count > 0) errores["nombre"] = new List<string>(erroresGenerales);
 
-            //correo
-            erroresGenerales.Clear();
-            if (string.IsNullOrEmpty(Correo))
-            {
-                erroresGenerales.Add("El correo es obligatorio.");
-            }
-            else if (!Correo.Contains("@") || !Correo.Contains("."))
-                erroresGenerales.Add("El correo no es válido.");
-            //se colocan en la lista para regresar
-            if (erroresGenerales.Count > 0) errores["correo"] = new List<string>(erroresGenerales);
+                // correo
+                erroresGenerales.Clear();
+                if (string.IsNullOrEmpty(Correo))
+                {
+                    erroresGenerales.Add("El correo es obligatorio.");
+                }
+                else if (!Correo.Contains("@") || !Correo.Contains("."))
+                {
+                    erroresGenerales.Add("El correo no es válido.");
+                }
+                if (erroresGenerales.Count > 0) errores["correo"] = new List<string>(erroresGenerales);
 
-            //contraseña
-            erroresGenerales.Clear();
-            if (string.IsNullOrEmpty(Contrasenha))
-            {
-                erroresGenerales.Add("La contraseña es obligatoria.");
-            }
-            if (Contrasenha.Length < 6)
-                erroresGenerales.Add("La contraseña debe tener al menos 6 caracteres.");
-            if (!Regex.IsMatch(Contrasenha, @"[A-Z]"))
-                erroresGenerales.Add("Debe contener al menos una mayúscula.");
-            if (!Regex.IsMatch(Contrasenha, @"[a-z]"))
-                erroresGenerales.Add("Debe contener al menos una minúscula.");
-            if (!Regex.IsMatch(Contrasenha, @"[0-9]"))
-                erroresGenerales.Add("Debe contener al menos un número.");
-            //se colocan en la lista para regresar
-            if (erroresGenerales.Count > 0) errores["contrasenha"] = new List<string>(erroresGenerales);
+                // contraseña
+                erroresGenerales.Clear();
+                if (string.IsNullOrEmpty(Contrasenha))
+                {
+                    erroresGenerales.Add("La contraseña es obligatoria.");
+                }
+                if (!string.IsNullOrEmpty(Contrasenha))
+                {
+                    if (Contrasenha.Length < 6)
+                        erroresGenerales.Add("Debe tener al menos 6 caracteres.");
+                    if (!Regex.IsMatch(Contrasenha, @"[A-Z]"))
+                        erroresGenerales.Add("Debe contener al menos una mayúscula.");
+                    if (!Regex.IsMatch(Contrasenha, @"[a-z]"))
+                        erroresGenerales.Add("Debe contener al menos una minúscula.");
+                    if (!Regex.IsMatch(Contrasenha, @"[0-9]"))
+                        erroresGenerales.Add("Debe contener al menos un número.");
+                }
+                if (erroresGenerales.Count > 0) errores["contrasenha"] = new List<string>(erroresGenerales);
 
-            //teléfono 
-            erroresGenerales.Clear();
-            string sinEspaciosTelefono = Telefono.Replace(" ", "");
-            if (string.IsNullOrEmpty(sinEspaciosTelefono) || !Regex.IsMatch(sinEspaciosTelefono, @"^\d{10}$"))
-            {
-                errores["telefono"] = new List<string>{"Teléfono debe tener 10 dígitos."};
+                // teléfono
+                erroresGenerales.Clear();
+                string sinEspaciosTelefono = Telefono?.Replace(" ", "") ?? "";
+                if (string.IsNullOrEmpty(sinEspaciosTelefono) || !Regex.IsMatch(sinEspaciosTelefono, @"^\d{10}$"))
+                {
+                    errores["telefono"] = new List<string> { "Teléfono debe tener 10 dígitos." };
+                }
+
+                // dirección
+                erroresGenerales.Clear();
+                if (string.IsNullOrEmpty(Direccion))
+                {
+                    erroresGenerales.Add("La dirección es obligatoria.");
+                }
+                if (!string.IsNullOrEmpty(Direccion) && Direccion.Length > 50)
+                {
+                    erroresGenerales.Add("La dirección debe tener menos de 50 caracteres.");
+                }
+                if (erroresGenerales.Count > 0) errores["direccion"] = new List<string>(erroresGenerales);
+
+                // fecha de nacimiento
+                erroresGenerales.Clear();
+                if (FechaNaci == default || FechaNaci > DateTime.Now)
+                {
+                    erroresGenerales.Add("Fecha de nacimiento inválida.");
+                }
+                else
+                {
+                    var edad = DateTime.Now.Year - FechaNaci.Year;
+                    if (FechaNaci > DateTime.Now.AddYears(-edad)) edad--;
+                    if (edad <= 0) erroresGenerales.Add("La edad debe ser mayor a 0.");
+                }
+                if (erroresGenerales.Count > 0) errores["fechaNaci"] = new List<string>(erroresGenerales);
+
+                // sexo
+                if (string.IsNullOrEmpty(Sexo))
+                {
+                    errores["sexo"] = new List<string> { "El sexo es obligatorio." };
+                }
             }
 
-            //direccion
-            erroresGenerales.Clear();
-            if (string.IsNullOrEmpty(Direccion))
-            {
-                erroresGenerales.Add("La dirección es obligatoria.");
-            }
-            if (Direccion.Length >50)
-            {
-                erroresGenerales.Add("La dirección debe de contener menos de 50 caracteres.");
-            }
-            //se colocan en la lista para regresar
-            if (erroresGenerales.Count > 0) errores["direccion"] = new List<string>(erroresGenerales);
-
-            //fecha de nacimiento
-            erroresGenerales.Clear();
-            if (FechaNaci == default || FechaNaci > DateTime.Now)
-            {
-                erroresGenerales.Add("Fecha de nacimiento inválida.");
-            }
-            else
-            {
-                //se calcula la edad
-                var edad = DateTime.Now.Year - FechaNaci.Year;
-                //se hace el ajuste exacto por mes
-                if (FechaNaci > DateTime.Now.AddYears(-edad)) edad--;
-                if (edad <= 0) erroresGenerales.Add("La edad debe ser mayor a 0.");
-            }
-            //se colocan en la lista para regresar
-            if (erroresGenerales.Count > 0) errores["fechaNaci"] = new List<string>(erroresGenerales);
-
-            //sexo
-            if (string.IsNullOrEmpty(Sexo) || Sexo == null)
-                errores["sexo"] = new List<string> { "El sexo es obligatorio." };
-
-            // si hay errores (false) donde se invocó este método van a obtener un diccionario con los errores
             return errores.Count == 0;
         }
+
 
         public string datosBD()
         {
@@ -186,7 +194,7 @@ namespace RegistroClientes.Modelo
         //Método común para Create, Update y Delete
         public string Modificar_guardar(string accion, string datosBD, string instruccion, SqlParameter[] parametros)
         {
-            string descripcion = null;
+            string resultado = null;
 
             try
             {
@@ -205,9 +213,9 @@ namespace RegistroClientes.Modelo
             }
             catch (Exception ex)
             {
-                descripcion = $"Error: {ex.Message}";
+                resultado = $"Error: {ex.Message}";
             }
-            return descripcion;
+            return resultado;
         }
     }
 }

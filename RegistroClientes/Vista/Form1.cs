@@ -23,31 +23,16 @@ namespace RegistroClientes
 
         private void btnInsertar_Click(object sender, EventArgs e)
         {
-            var datosCliente = obtenerDatos("insertar");  // Obtener los datos del formulario
-            Mostrar(datosCliente);//eeee pruebita
+            var datosCliente = obtenerDatos("Insertar");  // Obtener los datos del formulario
+            Mostrar(datosCliente);
             _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            var datosCliente = obtenerDatos("Buscar");  // Obtener los datos del formulario
-            Mostrar(datosCliente);//eeee pruebita
-            _controller.ValidarYProcesarDatos(datosCliente);
-        }
-
-        private void btnActualizar_Click(object sender, EventArgs e)
-        {
-            var datosCliente = obtenerDatos("actualizar");  // Obtener los datos del formulario
-            Mostrar(datosCliente);//eeee pruebita
-            _controller.RellenarVista(datosCliente);  // Pasamos los datos al controlador para validación
-        }
-
-        // Se obtiene los datos y se guardan en la clase del modelo
-        private DatosClienteMetodos obtenerDatos(string accion)
-        {
-            erroresMSJ.Clear();
+            //ocupa id y accion
             var datosCliente = new DatosClienteMetodos();
-
+            datosCliente.Accion = "Buscar";  // Obtener los datos del formulario
             int id;
             if (int.TryParse(txtID.Text, out id))
             {
@@ -58,6 +43,37 @@ namespace RegistroClientes
             {
                 erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
             }
+            _controller.ValidarYProcesarDatos(datosCliente);    
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            var datosCliente = obtenerDatos("Actualizar");  // Obtener los datos del formulario
+            Mostrar(datosCliente);//eeee pruebita
+            _controller.RellenarVista(datosCliente);  // Pasamos los datos al controlador para validación
+        }
+
+        // Se obtiene los datos y se guardan en la clase del modelo
+        private DatosClienteMetodos obtenerDatos(string accion)
+        {
+            erroresMSJ.Clear();
+            var datosCliente = new DatosClienteMetodos();
+
+            //no siempre se ocupa el id
+            if (datosCliente.Accion == "Buscar" || datosCliente.Accion == "Borrar")
+            {
+                int id;
+                if (int.TryParse(txtID.Text, out id))
+                {
+                    datosCliente.Id = id;
+                    //se obtiene el dato
+                }
+                else
+                {
+                    erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
+                }
+            }
+
             datosCliente.Nombre = txtNombreCli.Text;
             datosCliente.Correo = txtCorreoCli.Text;
             datosCliente.Contrasenha = txtContraseCli.Text;
@@ -80,7 +96,7 @@ namespace RegistroClientes
             }
             else if (radioSexoSin.Checked)
             {
-                datosCliente.Sexo = "No especificado";
+                datosCliente.Sexo = "Sin Espe";
             }
             else
             {

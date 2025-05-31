@@ -21,63 +21,50 @@ namespace RegistroClientes.Controlador
 
         public void RellenarVista(DatosClienteMetodos datosRecibidos)
         {
-            _vista.txtID.Text = "eee" + datosRecibidos.Id.ToString();
-            _vista.txtNombreCli.Text = "eee" + datosRecibidos.Nombre.ToString();
-            _vista.txtCorreoCli.Text = "eee" + datosRecibidos.Correo.ToString();
-            _vista.txtContraseCli.Text = "eee" + datosRecibidos.Contrasenha.ToString();
-            _vista.txtTelefonoCli.Text = "eee" + datosRecibidos.Telefono.ToString();
-            _vista.txtDireccionCli.Text = "eee" + datosRecibidos.Direccion.ToString();
-            _vista.txtFechaNaciCli.Text = "eee" + datosRecibidos.FechaNaci.ToString();
-            if (datosRecibidos.Sexo == "Hombre")
+            if (datosRecibidos.Errores == null)
             {
-                _vista.radioSexoH.Checked = true;
+                _vista.txtID.Text = datosRecibidos.Id.ToString();
+                _vista.txtNombreCli.Text = datosRecibidos.Nombre.ToString();
+                _vista.txtCorreoCli.Text = datosRecibidos.Correo.ToString();
+                _vista.txtContraseCli.Text = datosRecibidos.Contrasenha.ToString();
+                _vista.txtTelefonoCli.Text = datosRecibidos.Telefono.ToString();
+                _vista.txtDireccionCli.Text = datosRecibidos.Direccion.ToString();
+                _vista.txtFechaNaciCli.Text = datosRecibidos.FechaNaci.ToString();
+                if (datosRecibidos.Sexo == "Hombre")
+                {
+                    _vista.radioSexoH.Checked = true;
+                }
+                else if (datosRecibidos.Sexo == "Mujer")
+                {
+                    _vista.radioSexoM.Checked = true;
+                }
+                else if (datosRecibidos.Sexo == "Sin Espe")
+                {
+                    _vista.radioSexoSin.Checked = true;
+                }
+                _vista.Mensaje($"El dato {datosRecibidos.Id} ha sido encontrado con éxito");
             }
-            else if (datosRecibidos.Sexo == "Mujer")
+            else
             {
-                _vista.radioSexoM.Checked = true;
-            }
-            else if (datosRecibidos.Sexo == "No especificado")
-            {
-                _vista.radioSexoSin.Checked = true;
+                _vista.Mensaje(datosRecibidos.Errores);
             }
         }
 
         public void ValidarYProcesarDatos(DatosClienteMetodos datosDelFormulario)
         {
-            //si hay errores los muestra en la vista
-            if (datosDelFormulario.EsValido(out var erroresAlValidar))
+            // 1. Validación
+            if (!datosDelFormulario.EsValido(out var erroresAlValidar, datosDelFormulario.Accion))
             {
-                //sin errores eeeee quitar esto
-                _vista.Mensaje("Se ha procesado correctamente.");
-
-                //PROCESAR TODAS LAS LLAMADAS A LA BD
-                switch (datosDelFormulario.Accion)
-                {
-                    case "buscar":
-                        SqlParameter [] parametros = new SqlParameter[]
-                        {
-                            new SqlParameter("@id", datosDelFormulario.Id)
-                        };
-                        //se obtiene un objeto de los datos contenidos en la BD
-                        var resultadoBD = datosDelFormulario.Seleccionar(datosDelFormulario.datosBD(),"SELECT * FROM miTabla WHERE id = @id", parametros);
-                        //colocar los datos recibidos en la vista
-                        break;
-                }
-            }
-            else
-            {
-                //si el clic es en buscar no mandar errrores eeeeeeeeeee
-                //procesar errore en la vista
                 var erroresDict = new Dictionary<Control, string>();
 
                 foreach (var error in erroresAlValidar)
                 {
-                    //se concatenan TODOS los mensajes para cada ciclo
                     string mensajeUnido = string.Join("\n", error.Value);
                     switch (error.Key)
                     {
                         case "id":
                             erroresDict[_vista.txtID] = mensajeUnido;
+                            _vista.Mensaje("1");
                             break;
                         case "nombre":
                             erroresDict[_vista.txtNombreCli] = mensajeUnido;
@@ -102,10 +89,55 @@ namespace RegistroClientes.Controlador
                             break;
                     }
                 }
-                //se insertan los errores en las áreas correspondientes
+                //en este if hay errores
                 _vista.MostrarErrores(erroresDict);
+                return; // detener ejecución si hay errores
+            }
+
+            // 2. Procesamiento según acción
+            List<SqlParameter> parametros = new List<SqlParameter>();
+            string instruccion = "";
+
+            switch (datosDelFormulario.Accion)
+            {
+                case "Buscar":
+                    instruccion = "SELECT * FROM Clientes WHERE id = @id";
+                    parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
+
+                    var resultadoBD = datosDelFormulario.Seleccionar(
+                        datosDelFormulario.datosBD(),
+                        instruccion,
+                        parametros.ToArray()
+                    );
+
+                    RellenarVista(resultadoBD);
+                    break;
+
+                case "Insertar":
+                    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo) " +
+                                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo, @activo)";
+
+                    parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
+                    parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
+                    parametros.Add(new SqlParameter("@contrasenha", datosDelFormulario.Contrasenha));
+                    parametros.Add(new SqlParameter("@telefono", datosDelFormulario.Telefono));
+                    parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
+                    parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
+                    parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
+                    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
+
+                    string stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                        "Insertar",
+                        datosDelFormulario.datosBD(),
+                        instruccion,
+                        parametros.ToArray()
+                    );
+
+                    _vista.Mensaje(stringResultadoBD);
+                    break;
             }
         }
+
 
 
 
