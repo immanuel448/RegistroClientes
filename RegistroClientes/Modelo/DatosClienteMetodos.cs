@@ -139,7 +139,6 @@ namespace RegistroClientes.Modelo
         }
 
 
-
         //eeeeeeeeeeeeeeeeeeeee-----------------------------------------------
         //método exclusivo para seleccionar datos de la BD
         //eeeeeeeeeeeee no tengo certeza con la clase que se devuelve èsta es el padre

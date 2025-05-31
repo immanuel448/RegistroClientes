@@ -64,7 +64,6 @@ namespace RegistroClientes.Controlador
                     {
                         case "id":
                             erroresDict[_vista.txtID] = mensajeUnido;
-                            _vista.Mensaje("1");
                             break;
                         case "nombre":
                             erroresDict[_vista.txtNombreCli] = mensajeUnido;

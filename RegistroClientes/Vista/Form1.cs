@@ -13,6 +13,7 @@ namespace RegistroClientes
         public Form1()
         {
             InitializeComponent();
+            txtID.TextChanged += TxtID_TextChanged;
             _controller = new FormController(this);  // Inicializamos el controlador
         }
 
@@ -21,12 +22,27 @@ namespace RegistroClientes
             // Aquí puedes cargar configuraciones adicionales si lo necesitas
         }
 
-        private void btnInsertar_Click(object sender, EventArgs e)
+
+        // Evento que se ejecuta cuando el texto en txtID cambia eeeee no funciona
+        private void TxtID_TextChanged(object sender, EventArgs e)
         {
-            var datosCliente = obtenerDatos("Insertar");  // Obtener los datos del formulario
-            Mostrar(datosCliente);
-            _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
+            // Asegúrate de que sender sea un control y no sea null
+            if (sender is TextBox)
+            {
+                if (!string.IsNullOrEmpty(txtID.Text))
+                {
+                    btnBuscar.Enabled = true;
+                    btnBorrar.Enabled = true;
+                }
+                else
+                {
+                    btnBuscar.Enabled = false;
+                    btnBorrar.Enabled = false;
+                }
+            }
         }
+
+
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -43,7 +59,17 @@ namespace RegistroClientes
             {
                 erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
             }
-            _controller.ValidarYProcesarDatos(datosCliente);    
+            _controller.ValidarYProcesarDatos(datosCliente);
+            //eeee se debe de inhabilitar el botón de id despué de encotnrar datos
+        }
+
+
+        private void btnInsertar_Click(object sender, EventArgs e)
+        {
+            var datosCliente = obtenerDatos("Insertar");  // Obtener los datos del formulario
+            Mostrar(datosCliente);
+            _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
+            //desactivar boton de id 
         }
 
         private void btnActualizar_Click(object sender, EventArgs e)
@@ -51,6 +77,11 @@ namespace RegistroClientes
             var datosCliente = obtenerDatos("Actualizar");  // Obtener los datos del formulario
             Mostrar(datosCliente);//eeee pruebita
             _controller.RellenarVista(datosCliente);  // Pasamos los datos al controlador para validación
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarControles(this);
         }
 
         // Se obtiene los datos y se guardan en la clase del modelo
@@ -136,11 +167,6 @@ namespace RegistroClientes
         public void Mensaje(string mensajeRecibido)
         {
             MessageBox.Show(mensajeRecibido);
-        }
-
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarControles(this);
         }
 
         // Método para limpiar todos los controles, genérico

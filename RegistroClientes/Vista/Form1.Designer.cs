@@ -223,6 +223,7 @@
             btnBorrar.TabIndex = 18;
             btnBorrar.Text = "Borrar";
             btnBorrar.UseVisualStyleBackColor = true;
+            btnBorrar.TextChanged += TxtID_TextChanged;
             // 
             // btnLimpiar
             // 
