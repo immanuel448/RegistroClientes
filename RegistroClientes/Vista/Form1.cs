@@ -82,8 +82,6 @@ namespace RegistroClientes
                 erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
             }
             _controller.ValidarYProcesarDatos(datosCliente);
-            //eeee se debe de inhabilitar el botón de id despué de encotnrar datos
-            Mostrar(datosCliente);//pruebita
         }
 
         private void btnInsertar_Click(object sender, EventArgs e)
@@ -159,6 +157,7 @@ namespace RegistroClientes
                 datosCliente.Sexo = null;
             }
             datosCliente.Accion = accion;
+            ///falta este campo en el formulario
             datosCliente.Activo = true;
 
             return datosCliente;
@@ -195,7 +194,7 @@ namespace RegistroClientes
             MessageBox.Show(mensajeRecibido);
         }
 
-        private void LimpiarFormulario(Control control, bool omitirID = false)
+        public void LimpiarFormulario(Control control, bool omitirID = false)
         {
             erroresMSJ.Clear();
 
