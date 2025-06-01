@@ -153,6 +153,7 @@ namespace RegistroClientes.Modelo
                 using (SqlConnection conexion = new SqlConnection(datosBD))
                 {
                     conexion.Open();
+
                     using (SqlCommand comando = new SqlCommand(instruccion, conexion))
                     {
                         comando.Parameters.AddRange(parametros);
@@ -200,13 +201,29 @@ namespace RegistroClientes.Modelo
                 using (SqlConnection conexion = new SqlConnection(datosBD))
                 {
                     conexion.Open();
+
+                    // Si es Insertar, se agrega la instrucción para obtener el ID generado
+                    if (accion == "Insertar")
+                        instruccion += "; SELECT SCOPE_IDENTITY();";
+
                     using (SqlCommand comando = new SqlCommand(instruccion, conexion))
                     {
                         comando.Parameters.AddRange(parametros);
-
-                        int resultadoConsulta = comando.ExecuteNonQuery();
-
-                        return resultadoConsulta > 0 ? $"Éxito al {accion}" : $"No realizó ninguna acción al intentar {accion}";
+                            
+                        if (accion == "Insertar")
+                        {
+                            //para insertar devuelve el Id que le corresponde al nuevo campo
+                            object idGenerado = comando.ExecuteScalar();
+                            return idGenerado != null ? $"Insertado con ID: {idGenerado}" : "No se pudo obtener el ID insertado.";
+                        }
+                        else
+                        {
+                            //para borrar, actualizar
+                            int resultadoConsulta = comando.ExecuteNonQuery();
+                            return resultadoConsulta > 0
+                                ? $"Éxito al {accion.ToLower()}"
+                                : $"No realizó ninguna acción al intentar {accion.ToLower()}";
+                        }
                     }
                 }
             }

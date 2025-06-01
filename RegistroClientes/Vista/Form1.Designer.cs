@@ -224,6 +224,7 @@
             btnBorrar.Text = "Borrar";
             btnBorrar.UseVisualStyleBackColor = true;
             btnBorrar.TextChanged += TxtID_TextChanged;
+            btnBorrar.Click += btnBorrar_Click;
             // 
             // btnLimpiar
             // 

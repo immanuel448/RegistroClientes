@@ -96,11 +96,12 @@ namespace RegistroClientes.Controlador
             // 2. Procesamiento según acción
             List<SqlParameter> parametros = new List<SqlParameter>();
             string instruccion = "";
+            string stringResultadoBD = "";
 
             switch (datosDelFormulario.Accion)
             {
                 case "Buscar":
-                    instruccion = "SELECT * FROM Clientes WHERE id = @id";
+                    instruccion = "SELECT * FROM Clientes WHERE id = @id AND activo = 1";
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
                     var resultadoBD = datosDelFormulario.Seleccionar(
@@ -123,15 +124,51 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
                     parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
-                    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
+                    //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
 
-                    string stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                    stringResultadoBD = datosDelFormulario.Modificar_guardar(
                         "Insertar",
                         datosDelFormulario.datosBD(),
                         instruccion,
                         parametros.ToArray()
                     );
 
+                    _vista.Mensaje(stringResultadoBD);
+                    break;
+
+                case "Actualizar":
+
+                    instruccion = "UPDATE Clientes SET nombre = @nombre, correo = @correo, contrasenha = @contrasenha, telefono = @telefono, direccion = @direccion, fechaNaci = @fechaNaci, sexo =@sexo, activo = @activo WHERE id = @id";
+
+                    parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
+                    parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
+                    parametros.Add(new SqlParameter("@contrasenha", datosDelFormulario.Contrasenha));
+                    parametros.Add(new SqlParameter("@telefono", datosDelFormulario.Telefono));
+                    parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
+                    parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
+                    parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
+                    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
+                    parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
+
+                    stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                        "Actualizar",
+                        datosDelFormulario.datosBD(),
+                        instruccion,
+                        parametros.ToArray());
+                    _vista.Mensaje(stringResultadoBD);
+                    break;
+
+                case "Borrar":
+
+                    instruccion = "UPDATE Clientes SET activo = false WHERE id = @id";
+
+                    parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
+
+                    stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                        "Actualizar",
+                        datosDelFormulario.datosBD(),
+                        instruccion,
+                        parametros.ToArray());
                     _vista.Mensaje(stringResultadoBD);
                     break;
             }

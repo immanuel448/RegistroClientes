@@ -14,6 +14,7 @@ namespace RegistroClientes
         {
             InitializeComponent();
             txtID.TextChanged += TxtID_TextChanged;
+            TxtID_TextChanged(txtID, EventArgs.Empty); // Llamada manual para evaluar estado inicial
             _controller = new FormController(this);  // Inicializamos el controlador
         }
 
@@ -23,7 +24,7 @@ namespace RegistroClientes
         }
 
 
-        // Evento que se ejecuta cuando el texto en txtID cambia eeeee no funciona
+        // Evento que se ejecuta cuando el texto en txtID cambia
         private void TxtID_TextChanged(object sender, EventArgs e)
         {
             // Asegúrate de que sender sea un control y no sea null
@@ -46,6 +47,7 @@ namespace RegistroClientes
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            LimpiarFormulario(this, true);
             //ocupa id y accion
             var datosCliente = new DatosClienteMetodos();
             datosCliente.Accion = "Buscar";  // Obtener los datos del formulario
@@ -63,25 +65,47 @@ namespace RegistroClientes
             //eeee se debe de inhabilitar el botón de id despué de encotnrar datos
         }
 
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario(this, true);
+            //ocupa id y accion
+            var datosCliente = new DatosClienteMetodos();
+            datosCliente.Accion = "Borrar";  // Obtener los datos del formulario
+            int id;
+            if (int.TryParse(txtID.Text, out id))
+            {
+                datosCliente.Id = id;
+                //se obtiene el dato
+            }
+            else
+            {
+                erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
+            }
+            _controller.ValidarYProcesarDatos(datosCliente);
+            //eeee se debe de inhabilitar el botón de id despué de encotnrar datos
+            Mostrar(datosCliente);//pruebita
+        }
 
         private void btnInsertar_Click(object sender, EventArgs e)
         {
+            //debe devolver el id con el que se insertaron los datos
+            txtID.Text = "";
             var datosCliente = obtenerDatos("Insertar");  // Obtener los datos del formulario
-            Mostrar(datosCliente);
             _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
-            //desactivar boton de id 
+            //desactivar text de id 
         }
 
         private void btnActualizar_Click(object sender, EventArgs e)
         {
             var datosCliente = obtenerDatos("Actualizar");  // Obtener los datos del formulario
-            Mostrar(datosCliente);//eeee pruebita
-            _controller.RellenarVista(datosCliente);  // Pasamos los datos al controlador para validación
+            _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación y ejecutar la consulta
+
+            //eeeee bloquear el id
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            LimpiarControles(this);
+            LimpiarFormulario(this);
         }
 
         // Se obtiene los datos y se guardan en la clase del modelo
@@ -89,9 +113,10 @@ namespace RegistroClientes
         {
             erroresMSJ.Clear();
             var datosCliente = new DatosClienteMetodos();
+            datosCliente.Accion = accion; //se debe colocar este dato al entrar a este método
 
             //no siempre se ocupa el id
-            if (datosCliente.Accion == "Buscar" || datosCliente.Accion == "Borrar")
+            if (datosCliente.Accion == "Buscar" || datosCliente.Accion == "Borrar" || datosCliente.Accion == "Actualizar")
             {
                 int id;
                 if (int.TryParse(txtID.Text, out id))
@@ -134,6 +159,7 @@ namespace RegistroClientes
                 datosCliente.Sexo = null;
             }
             datosCliente.Accion = accion;
+            datosCliente.Activo = true;
 
             return datosCliente;
         }
@@ -169,12 +195,16 @@ namespace RegistroClientes
             MessageBox.Show(mensajeRecibido);
         }
 
-        // Método para limpiar todos los controles, genérico
-        private void LimpiarControles(Control control)
+        private void LimpiarFormulario(Control control, bool omitirID = false)
         {
             erroresMSJ.Clear();
+
             foreach (Control c in control.Controls)
             {
+                // Si es el TextBox que quieres conservar, lo saltas
+                if (c == txtID && omitirID)
+                    continue;
+
                 if (c is TextBox txt)
                     txt.Clear();
                 else if (c is ComboBox combo)
@@ -186,9 +216,9 @@ namespace RegistroClientes
                 else if (c is DateTimePicker dtp)
                     dtp.Value = DateTime.Now;
 
-                // Si el control tiene controles hijos (como un Panel o GroupBox)
+                // Llamada recursiva si tiene hijos
                 if (c.HasChildren)
-                    LimpiarControles(c);
+                    LimpiarFormulario(c, omitirID);
             }
         }
     }
