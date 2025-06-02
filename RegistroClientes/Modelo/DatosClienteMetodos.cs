@@ -28,7 +28,8 @@ namespace RegistroClientes.Modelo
             }
 
             // Validaciones según acción
-            if (accion == "Buscar" || accion == "Borrar")
+            //id
+            if (accion != "Insertar")
             {
                 if (Id <= 0)
                 {
@@ -39,7 +40,7 @@ namespace RegistroClientes.Modelo
             if (accion == "Insertar" || accion == "Actualizar")
             {
                 //activo
-                if (Activo != true && Activo != false)
+                if (Activo == null)
                 {
                     errores["activo"] = new List<string> { "Debe seleccionar una opción para el campo activo." };
                 }
@@ -129,20 +130,26 @@ namespace RegistroClientes.Modelo
             return errores.Count == 0;
         }
 
-
         public string datosBD()
         {
-            // Construir configuración para leer appsettings.json
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+            try
+            {
+                // Construir configuración para leer appsettings.json
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json");
 
-            IConfiguration configuration = builder.Build();
+                IConfiguration configuration = builder.Build();
 
-            // Obtener cadena de conexión desde el archivo
-            return configuration.GetConnectionString("MiConexionSQL");
+                // Obtener cadena de conexión desde el archivo
+                return configuration.GetConnectionString("MiConexionSQL");
+
+            }
+            catch (Exception ex)
+            {
+                return "Error con los datos para conectar con la BD";
+            }
         }
-
 
         //métodos para interactuar con la BD -----------------------------------------------
         //método exclusivo para seleccionar datos de la BD
@@ -187,7 +194,7 @@ namespace RegistroClientes.Modelo
             }
             catch (Exception ex)
             {
-                resultados.Errores = $"Error: {ex.Message}";
+                resultados.Errores = $"Error (Buscar/Seleccionar): {ex.Message}";
             }
             return resultados;
         }
@@ -195,8 +202,7 @@ namespace RegistroClientes.Modelo
         //Método común para Create, Update y Delete
         public string Modificar_guardar(string accion, string datosBD, string instruccion, SqlParameter[] parametros)
         {
-            string resultado = null;
-
+            string errores = null;
             try
             {
                 using (SqlConnection conexion = new SqlConnection(datosBD))
@@ -230,9 +236,9 @@ namespace RegistroClientes.Modelo
             }
             catch (Exception ex)
             {
-                resultado = $"Error: {ex.Message}";
+               errores = $"Error: {ex.Message}";
             }
-            return resultado;
+            return errores;
         }
     }
 }

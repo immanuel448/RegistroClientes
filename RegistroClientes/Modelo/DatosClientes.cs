@@ -16,11 +16,11 @@ namespace RegistroClientes.Modelo
         public string Direccion { get; set; }
         public DateTime FechaNaci { get; set; }
         public string Sexo { get; set; }
-        public bool Activo { get; set; }
+        public bool? Activo { get; set; }
         public string Accion { get; set; }
         public string Errores { get; set; }
 
-        public DatosClientes(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = null, string errores = null)
+        public DatosClientes(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool? activo = null, string accion = null, string errores = null)
         {
             Id = id;
             Nombre = nombre;

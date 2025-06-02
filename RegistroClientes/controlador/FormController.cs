@@ -76,22 +76,29 @@ namespace RegistroClientes.Controlador
                     instruccion = "SELECT * FROM Clientes WHERE id = @id AND activo = 1";
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
-                    var resultadoBD = datosDelFormulario.Seleccionar(
-                        datosDelFormulario.datosBD(),
-                        instruccion,
-                        parametros.ToArray()
-                    );
-
-                    RellenarVista(resultadoBD);
-                    //se inhabilita para que no se modifique, igual no se va a pasar con otras acciones
-                    if (resultadoBD.Errores == null)
+                    if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
                     {
-                        _vista.txtID.Enabled = false;
-                        _vista.btnBuscar.Enabled = false;
+                        var resultadoBD = datosDelFormulario.Seleccionar(
+                            datosDelFormulario.datosBD(),
+                            instruccion,
+                            parametros.ToArray()
+                        );
+
+                        RellenarVista(resultadoBD);
+                        //se inhabilita para que no se modifique, igual no se va a pasar con otras acciones
+                        if (resultadoBD.Errores == null)
+                        {
+                            _vista.txtID.Enabled = false;
+                            _vista.btnBuscar.Enabled = false;
+                        }
+                        else
+                        {
+                            _vista.txtID.Text = "";
+                        }
                     }
                     else
                     {
-                        _vista.txtID.Text = "";
+                        _vista.Mensaje("Error con los datos para conectar con la BD");
                     }
                     break;
 
@@ -109,12 +116,19 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
                     //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
 
-                    stringResultadoBD = datosDelFormulario.Modificar_guardar(
-                        "Insertar",
-                        datosDelFormulario.datosBD(),
-                        instruccion,
-                        parametros.ToArray()
-                    );
+                    if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
+                    {
+                        stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                            "Insertar",
+                            datosDelFormulario.datosBD(),
+                            instruccion,
+                            parametros.ToArray()
+                        );
+                    }
+                    else
+                    {
+                        _vista.Mensaje("Error con los datos para conectar con la BD");
+                    }
 
                     _vista.Mensaje($"Datos insertados con el ID: " + stringResultadoBD);
                     _vista.txtID.Text = stringResultadoBD;
@@ -134,12 +148,20 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
-                    stringResultadoBD = datosDelFormulario.Modificar_guardar(
-                        "Actualizar",
-                        datosDelFormulario.datosBD(),
-                        instruccion,
-                        parametros.ToArray());
-                    _vista.Mensaje(stringResultadoBD);
+
+                    if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
+                    {
+                        stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                            "Actualizar",
+                            datosDelFormulario.datosBD(),
+                            instruccion,
+                            parametros.ToArray());
+                        _vista.Mensaje(stringResultadoBD);
+                    }
+                    else
+                    {
+                        _vista.Mensaje("Error con los datos para conectar con la BD");
+                    }
                     break;
 
                 case "Borrar":
@@ -148,13 +170,20 @@ namespace RegistroClientes.Controlador
 
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
-                    stringResultadoBD = datosDelFormulario.Modificar_guardar(
-                        "Borrar",
-                        datosDelFormulario.datosBD(),
-                        instruccion,
-                        parametros.ToArray());
-                    _vista.Mensaje(stringResultadoBD);
-                    _vista.LimpiarFormulario(_vista);
+                    if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
+                    {
+                        stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                            "Borrar",
+                            datosDelFormulario.datosBD(),
+                            instruccion,
+                            parametros.ToArray());
+                        _vista.Mensaje(stringResultadoBD);
+                        _vista.LimpiarFormulario(_vista);
+                    }
+                    else
+                    {
+                        _vista.Mensaje("Error con los datos para conectar con la BD");
+                    }
                     break;
             }
         }

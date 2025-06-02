@@ -13,9 +13,9 @@ namespace RegistroClientes
         public Form1()
         {
             InitializeComponent();
-            txtID.TextChanged += TxtID_TextChanged;
+            txtID.TextChanged += TxtID_TextChanged;//revisa cambios en este elemento
             TxtID_TextChanged(txtID, EventArgs.Empty); // Llamada manual para evaluar estado inicial
-            radioNo.CheckedChanged += RadioNo_CheckedChanged;
+            radioNo.CheckedChanged += RadioNo_CheckedChanged;//revisa cambios en este elemento
             _controller = new FormController(this);  // Inicializamos el controlador
         }
 
@@ -28,7 +28,7 @@ namespace RegistroClientes
         // Evento que se ejecuta cuando el texto en txtID cambia
         private void TxtID_TextChanged(object sender, EventArgs e)
         {
-            // Asegúrate de que sender sea un control y no sea null
+            // Sender debe ser un control, no null
             if (sender is TextBox)
             {
                 if (!string.IsNullOrEmpty(txtID.Text))
@@ -68,19 +68,9 @@ namespace RegistroClientes
         {
             LimpiarFormulario(this, true);
             //ocupa id y accion
-            var datosCliente = new DatosClienteMetodos();
-            datosCliente.Accion = "Buscar";
-            int id;
-            if (int.TryParse(txtID.Text, out id))
-            {
-                datosCliente.Id = id;   //se obtiene el dato
-            }
-            else
-            {
-                erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
-            }
-            _controller.ValidarYProcesarDatos(datosCliente);
-            //se inhabilita el botón del id despué de encotnrar datos
+            var datosCliente = obtenerDatos("Buscar");  // Obtener los datos del formulario
+            _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación y ejecutar la consulta
+            //se inhabilita el botón del id después de encontrar datos
         }
 
         private void btnBorrar_Click(object sender, EventArgs e)
@@ -101,19 +91,8 @@ namespace RegistroClientes
 
             LimpiarFormulario(this, true);
             //ocupa id y accion
-            var datosCliente = new DatosClienteMetodos();
-            datosCliente.Accion = "Borrar";
-            int id;
-            if (int.TryParse(txtID.Text, out id))
-            {
-                datosCliente.Id = id;
-                //se obtiene el dato
-            }
-            else
-            {
-                erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
-            }
-            _controller.ValidarYProcesarDatos(datosCliente);
+            var datosCliente = obtenerDatos("Borrar");  // Obtener los datos del formulario
+            _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación y ejecutar la consulta
         }
 
         private void btnInsertar_Click(object sender, EventArgs e)
@@ -147,7 +126,7 @@ namespace RegistroClientes
             if (datosCliente.Accion == "Buscar" || datosCliente.Accion == "Borrar" || datosCliente.Accion == "Actualizar")
             {
                 int id;
-                if (int.TryParse(txtID.Text, out id))
+                if (int.TryParse(txtID.Text, out id) && id > 0)
                 {
                     datosCliente.Id = id;
                     //se obtiene el dato
@@ -155,6 +134,12 @@ namespace RegistroClientes
                 else
                 {
                     erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
+                }
+
+                if (datosCliente.Accion != "Actualizar")
+                {
+                    //solo con "Actualizar" continúa
+                    return datosCliente;
                 }
             }
 
@@ -186,6 +171,7 @@ namespace RegistroClientes
             {
                 datosCliente.Sexo = null;
             }
+
             //activo
             if (radioSi.Checked)
             {
@@ -195,6 +181,11 @@ namespace RegistroClientes
             {
                 datosCliente.Activo = false;
             }
+            else
+            {
+                datosCliente.Activo = null;
+            }
+
             //Acción
             datosCliente.Accion = accion;
 
