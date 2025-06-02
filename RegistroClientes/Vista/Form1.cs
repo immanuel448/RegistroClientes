@@ -15,12 +15,13 @@ namespace RegistroClientes
             InitializeComponent();
             txtID.TextChanged += TxtID_TextChanged;
             TxtID_TextChanged(txtID, EventArgs.Empty); // Llamada manual para evaluar estado inicial
+            radioNo.CheckedChanged += RadioNo_CheckedChanged;
             _controller = new FormController(this);  // Inicializamos el controlador
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Aquí puedes cargar configuraciones adicionales si lo necesitas
+            // buuu!!!
         }
 
 
@@ -43,34 +44,65 @@ namespace RegistroClientes
             }
         }
 
+        private void RadioNo_CheckedChanged(object sender, EventArgs e)
+        {
+            // Solo actuar si el botón fue marcado (no cuando se desmarca)
+            if (radioNo.Checked)
+            {
+                var confirmacion = MessageBox.Show(
+                    "¿Estás seguro de que deseas marcar este registro como inactivo?",
+                    "Confirmar acción",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
 
+                if (confirmacion == DialogResult.No)
+                {
+                    // Revertir la selección si el usuario cancela
+                    radioNo.Checked = false;
+                }
+            }
+        }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             LimpiarFormulario(this, true);
             //ocupa id y accion
             var datosCliente = new DatosClienteMetodos();
-            datosCliente.Accion = "Buscar";  // Obtener los datos del formulario
+            datosCliente.Accion = "Buscar";
             int id;
             if (int.TryParse(txtID.Text, out id))
             {
-                datosCliente.Id = id;
-                //se obtiene el dato
+                datosCliente.Id = id;   //se obtiene el dato
             }
             else
             {
                 erroresMSJ.SetError(txtID, "El ID ingresado debe ser número positivo.");
             }
             _controller.ValidarYProcesarDatos(datosCliente);
-            //eeee se debe de inhabilitar el botón de id despué de encotnrar datos
+            //se inhabilita el botón del id despué de encotnrar datos
         }
 
         private void btnBorrar_Click(object sender, EventArgs e)
         {
+            // Mostrar mensaje de confirmación antes de borrar
+            var confirmacion = MessageBox.Show(
+                "¿Estás seguro de que deseas borrar este registro?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (confirmacion == DialogResult.No)
+            {
+                // Si el usuario cancela, no se hace nada
+                return;
+            }
+
             LimpiarFormulario(this, true);
             //ocupa id y accion
             var datosCliente = new DatosClienteMetodos();
-            datosCliente.Accion = "Borrar";  // Obtener los datos del formulario
+            datosCliente.Accion = "Borrar";
             int id;
             if (int.TryParse(txtID.Text, out id))
             {
@@ -89,7 +121,7 @@ namespace RegistroClientes
             //debe devolver el id con el que se insertaron los datos
             txtID.Text = "";
             var datosCliente = obtenerDatos("Insertar");  // Obtener los datos del formulario
-            _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación
+            _controller.ValidarYProcesarDatos(datosCliente);
             //desactivar text de id 
         }
 
@@ -97,8 +129,6 @@ namespace RegistroClientes
         {
             var datosCliente = obtenerDatos("Actualizar");  // Obtener los datos del formulario
             _controller.ValidarYProcesarDatos(datosCliente);  // Pasamos los datos al controlador para validación y ejecutar la consulta
-
-            //eeeee bloquear el id
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -113,7 +143,7 @@ namespace RegistroClientes
             var datosCliente = new DatosClienteMetodos();
             datosCliente.Accion = accion; //se debe colocar este dato al entrar a este método
 
-            //no siempre se ocupa el id
+            // sólo se ocupa para buscar y para borrar
             if (datosCliente.Accion == "Buscar" || datosCliente.Accion == "Borrar" || datosCliente.Accion == "Actualizar")
             {
                 int id;
@@ -133,13 +163,13 @@ namespace RegistroClientes
             datosCliente.Contrasenha = txtContraseCli.Text;
             datosCliente.Telefono = txtTelefonoCli.Text;
             datosCliente.Direccion = txtDireccionCli.Text;
-
+            //fecha nacimiento
             DateTime fecha;
             if (DateTime.TryParse(txtFechaNaciCli.Text, out fecha))
             {
                 datosCliente.FechaNaci = fecha;
             }
-
+            //sexo
             if (radioSexoH.Checked)
             {
                 datosCliente.Sexo = "Hombre";
@@ -156,9 +186,17 @@ namespace RegistroClientes
             {
                 datosCliente.Sexo = null;
             }
+            //activo
+            if (radioSi.Checked)
+            {
+                datosCliente.Activo = true;
+            }
+            else if (radioNo.Checked)
+            {
+                datosCliente.Activo = false;
+            }
+            //Acción
             datosCliente.Accion = accion;
-            ///falta este campo en el formulario
-            datosCliente.Activo = true;
 
             return datosCliente;
         }
@@ -174,6 +212,7 @@ namespace RegistroClientes
                 $"direccion {datosCliente.Direccion}\n" +
                 $"sexo {datosCliente.Sexo}\n" +
                 $"fecha {datosCliente.FechaNaci}\n" +
+                $"activo {datosCliente.Activo}\n" +
                 $"accion {datosCliente.Accion}\n");
         }
 
@@ -197,6 +236,7 @@ namespace RegistroClientes
         public void LimpiarFormulario(Control control, bool omitirID = false)
         {
             erroresMSJ.Clear();
+            txtID.Enabled = true;
 
             foreach (Control c in control.Controls)
             {

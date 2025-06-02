@@ -55,8 +55,13 @@
             radioSexoH = new RadioButton();
             lblID = new Label();
             txtID = new TextBox();
+            lblActivo = new Label();
+            radioSi = new RadioButton();
+            radioNo = new RadioButton();
+            groupActivo = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)erroresMSJ).BeginInit();
             grupoSexo.SuspendLayout();
+            groupActivo.SuspendLayout();
             SuspendLayout();
             // 
             // tituloCliente
@@ -73,7 +78,7 @@
             // 
             lblnombreCli.AutoSize = true;
             lblnombreCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblnombreCli.Location = new Point(24, 76);
+            lblnombreCli.Location = new Point(21, 104);
             lblnombreCli.Name = "lblnombreCli";
             lblnombreCli.Size = new Size(69, 20);
             lblnombreCli.TabIndex = 1;
@@ -85,14 +90,14 @@
             // 
             // txtNombreCli
             // 
-            txtNombreCli.Location = new Point(125, 76);
+            txtNombreCli.Location = new Point(122, 104);
             txtNombreCli.Name = "txtNombreCli";
             txtNombreCli.Size = new Size(320, 23);
             txtNombreCli.TabIndex = 2;
             // 
             // txtCorreoCli
             // 
-            txtCorreoCli.Location = new Point(125, 118);
+            txtCorreoCli.Location = new Point(122, 146);
             txtCorreoCli.Name = "txtCorreoCli";
             txtCorreoCli.Size = new Size(320, 23);
             txtCorreoCli.TabIndex = 4;
@@ -101,7 +106,7 @@
             // 
             lblCorreoCli.AutoSize = true;
             lblCorreoCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblCorreoCli.Location = new Point(24, 118);
+            lblCorreoCli.Location = new Point(21, 146);
             lblCorreoCli.Name = "lblCorreoCli";
             lblCorreoCli.Size = new Size(61, 20);
             lblCorreoCli.TabIndex = 3;
@@ -109,7 +114,7 @@
             // 
             // txtContraseCli
             // 
-            txtContraseCli.Location = new Point(125, 163);
+            txtContraseCli.Location = new Point(122, 191);
             txtContraseCli.Name = "txtContraseCli";
             txtContraseCli.Size = new Size(320, 23);
             txtContraseCli.TabIndex = 6;
@@ -118,7 +123,7 @@
             // 
             lblContraseCli.AutoSize = true;
             lblContraseCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblContraseCli.Location = new Point(24, 163);
+            lblContraseCli.Location = new Point(21, 191);
             lblContraseCli.Name = "lblContraseCli";
             lblContraseCli.Size = new Size(96, 20);
             lblContraseCli.TabIndex = 5;
@@ -126,7 +131,7 @@
             // 
             // txtTelefonoCli
             // 
-            txtTelefonoCli.Location = new Point(125, 208);
+            txtTelefonoCli.Location = new Point(122, 236);
             txtTelefonoCli.Name = "txtTelefonoCli";
             txtTelefonoCli.Size = new Size(320, 23);
             txtTelefonoCli.TabIndex = 8;
@@ -135,7 +140,7 @@
             // 
             lblTelefonoCli.AutoSize = true;
             lblTelefonoCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblTelefonoCli.Location = new Point(24, 208);
+            lblTelefonoCli.Location = new Point(21, 236);
             lblTelefonoCli.Name = "lblTelefonoCli";
             lblTelefonoCli.Size = new Size(75, 20);
             lblTelefonoCli.TabIndex = 7;
@@ -143,7 +148,7 @@
             // 
             // txtDireccionCli
             // 
-            txtDireccionCli.Location = new Point(125, 250);
+            txtDireccionCli.Location = new Point(122, 278);
             txtDireccionCli.Name = "txtDireccionCli";
             txtDireccionCli.Size = new Size(320, 23);
             txtDireccionCli.TabIndex = 10;
@@ -152,7 +157,7 @@
             // 
             lblDireccionCli.AutoSize = true;
             lblDireccionCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblDireccionCli.Location = new Point(24, 250);
+            lblDireccionCli.Location = new Point(21, 278);
             lblDireccionCli.Name = "lblDireccionCli";
             lblDireccionCli.Size = new Size(79, 20);
             lblDireccionCli.TabIndex = 9;
@@ -160,7 +165,7 @@
             // 
             // txtFechaNaciCli
             // 
-            txtFechaNaciCli.Location = new Point(171, 289);
+            txtFechaNaciCli.Location = new Point(168, 317);
             txtFechaNaciCli.Name = "txtFechaNaciCli";
             txtFechaNaciCli.Size = new Size(274, 23);
             txtFechaNaciCli.TabIndex = 12;
@@ -169,7 +174,7 @@
             // 
             lblFechaNaciCli.AutoSize = true;
             lblFechaNaciCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblFechaNaciCli.Location = new Point(24, 289);
+            lblFechaNaciCli.Location = new Point(21, 317);
             lblFechaNaciCli.Name = "lblFechaNaciCli";
             lblFechaNaciCli.Size = new Size(141, 20);
             lblFechaNaciCli.TabIndex = 11;
@@ -179,7 +184,7 @@
             // 
             lblSexoCli.AutoSize = true;
             lblSexoCli.Font = new Font("Microsoft Sans Serif", 12F);
-            lblSexoCli.Location = new Point(24, 341);
+            lblSexoCli.Location = new Point(21, 369);
             lblSexoCli.Name = "lblSexoCli";
             lblSexoCli.Size = new Size(49, 20);
             lblSexoCli.TabIndex = 13;
@@ -187,7 +192,7 @@
             // 
             // btnInsertar
             // 
-            btnInsertar.Location = new Point(24, 391);
+            btnInsertar.Location = new Point(21, 419);
             btnInsertar.Name = "btnInsertar";
             btnInsertar.Size = new Size(75, 23);
             btnInsertar.TabIndex = 15;
@@ -197,7 +202,7 @@
             // 
             // btnActualizar
             // 
-            btnActualizar.Location = new Point(138, 391);
+            btnActualizar.Location = new Point(135, 419);
             btnActualizar.Name = "btnActualizar";
             btnActualizar.Size = new Size(75, 23);
             btnActualizar.TabIndex = 16;
@@ -207,7 +212,7 @@
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(385, 36);
+            btnBuscar.Location = new Point(140, 61);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(60, 23);
             btnBuscar.TabIndex = 17;
@@ -217,7 +222,7 @@
             // 
             // btnBorrar
             // 
-            btnBorrar.Location = new Point(252, 391);
+            btnBorrar.Location = new Point(249, 419);
             btnBorrar.Name = "btnBorrar";
             btnBorrar.Size = new Size(75, 23);
             btnBorrar.TabIndex = 18;
@@ -228,7 +233,7 @@
             // 
             // btnLimpiar
             // 
-            btnLimpiar.Location = new Point(366, 391);
+            btnLimpiar.Location = new Point(363, 419);
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.Size = new Size(75, 23);
             btnLimpiar.TabIndex = 19;
@@ -241,7 +246,7 @@
             grupoSexo.Controls.Add(radioSexoSin);
             grupoSexo.Controls.Add(radioSexoM);
             grupoSexo.Controls.Add(radioSexoH);
-            grupoSexo.Location = new Point(114, 324);
+            grupoSexo.Location = new Point(111, 352);
             grupoSexo.Name = "grupoSexo";
             grupoSexo.Size = new Size(321, 43);
             grupoSexo.TabIndex = 23;
@@ -284,7 +289,7 @@
             // 
             lblID.AutoSize = true;
             lblID.Font = new Font("Microsoft Sans Serif", 12F);
-            lblID.Location = new Point(267, 39);
+            lblID.Location = new Point(22, 64);
             lblID.Name = "lblID";
             lblID.Size = new Size(42, 20);
             lblID.TabIndex = 24;
@@ -292,17 +297,61 @@
             // 
             // txtID
             // 
-            txtID.Location = new Point(315, 36);
+            txtID.Location = new Point(70, 61);
             txtID.Name = "txtID";
             txtID.Size = new Size(63, 23);
             txtID.TabIndex = 25;
+            // 
+            // lblActivo
+            // 
+            lblActivo.AutoSize = true;
+            lblActivo.Font = new Font("Microsoft Sans Serif", 12F);
+            lblActivo.Location = new Point(249, 60);
+            lblActivo.Name = "lblActivo";
+            lblActivo.Size = new Size(56, 20);
+            lblActivo.TabIndex = 26;
+            lblActivo.Text = "Activo:";
+            // 
+            // radioSi
+            // 
+            radioSi.AutoSize = true;
+            radioSi.Location = new Point(17, 17);
+            radioSi.Name = "radioSi";
+            radioSi.Size = new Size(34, 19);
+            radioSi.TabIndex = 23;
+            radioSi.TabStop = true;
+            radioSi.Text = "Sí";
+            radioSi.UseVisualStyleBackColor = true;
+            // 
+            // radioNo
+            // 
+            radioNo.AutoSize = true;
+            radioNo.Location = new Point(69, 17);
+            radioNo.Name = "radioNo";
+            radioNo.Size = new Size(41, 19);
+            radioNo.TabIndex = 24;
+            radioNo.TabStop = true;
+            radioNo.Text = "No";
+            radioNo.UseVisualStyleBackColor = true;
+            // 
+            // groupActivo
+            // 
+            groupActivo.Controls.Add(radioNo);
+            groupActivo.Controls.Add(radioSi);
+            groupActivo.Location = new Point(321, 41);
+            groupActivo.Name = "groupActivo";
+            groupActivo.Size = new Size(121, 43);
+            groupActivo.TabIndex = 26;
+            groupActivo.TabStop = false;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoValidate = AutoValidate.EnablePreventFocusChange;
-            ClientSize = new Size(467, 437);
+            ClientSize = new Size(467, 459);
+            Controls.Add(groupActivo);
+            Controls.Add(lblActivo);
             Controls.Add(txtID);
             Controls.Add(lblID);
             Controls.Add(grupoSexo);
@@ -333,6 +382,8 @@
             ((System.ComponentModel.ISupportInitialize)erroresMSJ).EndInit();
             grupoSexo.ResumeLayout(false);
             grupoSexo.PerformLayout();
+            groupActivo.ResumeLayout(false);
+            groupActivo.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -365,5 +416,9 @@
         internal RadioButton radioSexoH;
         internal TextBox txtID;
         internal Label lblID;
+        internal Label lblActivo;
+        internal GroupBox groupActivo;
+        internal RadioButton radioNo;
+        internal RadioButton radioSi;
     }
 }

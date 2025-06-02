@@ -19,37 +19,6 @@ namespace RegistroClientes.Controlador
             _repositorio = new DatosClienteMetodos();
         }
 
-        public void RellenarVista(DatosClienteMetodos datosRecibidos)
-        {
-            if (datosRecibidos.Errores == null)
-            {
-                _vista.txtID.Text = datosRecibidos.Id.ToString();
-                _vista.txtNombreCli.Text = datosRecibidos.Nombre.ToString();
-                _vista.txtCorreoCli.Text = datosRecibidos.Correo.ToString();
-                _vista.txtContraseCli.Text = datosRecibidos.Contrasenha.ToString();
-                _vista.txtTelefonoCli.Text = datosRecibidos.Telefono.ToString();
-                _vista.txtDireccionCli.Text = datosRecibidos.Direccion.ToString();
-                _vista.txtFechaNaciCli.Text = datosRecibidos.FechaNaci.ToString();
-                if (datosRecibidos.Sexo == "Hombre")
-                {
-                    _vista.radioSexoH.Checked = true;
-                }
-                else if (datosRecibidos.Sexo == "Mujer")
-                {
-                    _vista.radioSexoM.Checked = true;
-                }
-                else if (datosRecibidos.Sexo == "Sin Espe")
-                {
-                    _vista.radioSexoSin.Checked = true;
-                }
-                _vista.Mensaje($"El dato {datosRecibidos.Id} ha sido encontrado con éxito");
-            }
-            else
-            {
-                _vista.Mensaje(datosRecibidos.Errores);
-            }
-        }
-
         public void ValidarYProcesarDatos(DatosClienteMetodos datosDelFormulario)
         {
             // 1. Validación
@@ -64,6 +33,9 @@ namespace RegistroClientes.Controlador
                     {
                         case "id":
                             erroresDict[_vista.txtID] = mensajeUnido;
+                            break;
+                        case "activo":
+                            erroresDict[_vista.groupActivo] = mensajeUnido;
                             break;
                         case "nombre":
                             erroresDict[_vista.txtNombreCli] = mensajeUnido;
@@ -111,6 +83,16 @@ namespace RegistroClientes.Controlador
                     );
 
                     RellenarVista(resultadoBD);
+                    //se inhabilita para que no se modifique, igual no se va a pasar con otras acciones
+                    if (resultadoBD.Errores == null)
+                    {
+                        _vista.txtID.Enabled = false;
+                        _vista.btnBuscar.Enabled = false;
+                    }
+                    else
+                    {
+                        _vista.txtID.Text = "";
+                    }
                     break;
 
                 case "Insertar":
@@ -124,6 +106,7 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
                     parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
+                    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
                     //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
 
                     stringResultadoBD = datosDelFormulario.Modificar_guardar(
@@ -133,7 +116,8 @@ namespace RegistroClientes.Controlador
                         parametros.ToArray()
                     );
 
-                    _vista.Mensaje(stringResultadoBD);
+                    _vista.Mensaje($"Datos insertados con el ID: " + stringResultadoBD);
+                    _vista.txtID.Text = stringResultadoBD;
                     break;
 
                 case "Actualizar":
@@ -172,6 +156,49 @@ namespace RegistroClientes.Controlador
                     _vista.Mensaje(stringResultadoBD);
                     _vista.LimpiarFormulario(_vista);
                     break;
+            }
+        }
+
+        public void RellenarVista(DatosClienteMetodos datosRecibidos)
+        {
+            if (datosRecibidos.Errores == null)
+            {
+                _vista.txtID.Text = datosRecibidos.Id.ToString();
+                _vista.txtNombreCli.Text = datosRecibidos.Nombre.ToString();
+                _vista.txtCorreoCli.Text = datosRecibidos.Correo.ToString();
+                _vista.txtContraseCli.Text = datosRecibidos.Contrasenha.ToString();
+                _vista.txtTelefonoCli.Text = datosRecibidos.Telefono.ToString();
+                _vista.txtDireccionCli.Text = datosRecibidos.Direccion.ToString();
+                _vista.txtFechaNaciCli.Text = datosRecibidos.FechaNaci.ToString();
+                //sexo
+                if (datosRecibidos.Sexo == "Hombre")
+                {
+                    _vista.radioSexoH.Checked = true;
+                }
+                else if (datosRecibidos.Sexo == "Mujer")
+                {
+                    _vista.radioSexoM.Checked = true;
+                }
+                else if (datosRecibidos.Sexo == "Sin Espe")
+                {
+                    _vista.radioSexoSin.Checked = true;
+                }
+
+                //activo
+                if (datosRecibidos.Activo == true)
+                {
+                    _vista.radioSi.Checked = true;
+                }
+                else if (datosRecibidos.Activo == false)
+                {
+                    _vista.radioNo.Checked = true;
+                }
+
+                _vista.Mensaje($"El dato {datosRecibidos.Id} ha sido encontrado con éxito");
+            }
+            else
+            {
+                _vista.Mensaje(datosRecibidos.Errores);
             }
         }
     }

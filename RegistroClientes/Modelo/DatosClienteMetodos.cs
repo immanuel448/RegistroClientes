@@ -38,6 +38,12 @@ namespace RegistroClientes.Modelo
 
             if (accion == "Insertar" || accion == "Actualizar")
             {
+                //activo
+                if (Activo != true && Activo != false)
+                {
+                    errores["activo"] = new List<string> { "Debe seleccionar una opción para el campo activo." };
+                }
+
                 // nombre
                 if (string.IsNullOrEmpty(Nombre))
                 {
@@ -120,7 +126,6 @@ namespace RegistroClientes.Modelo
                     errores["sexo"] = new List<string> { "El sexo es obligatorio." };
                 }
             }
-
             return errores.Count == 0;
         }
 
@@ -139,9 +144,8 @@ namespace RegistroClientes.Modelo
         }
 
 
-        //eeeeeeeeeeeeeeeeeeeee-----------------------------------------------
+        //métodos para interactuar con la BD -----------------------------------------------
         //método exclusivo para seleccionar datos de la BD
-
         public DatosClienteMetodos Seleccionar(string datosBD, string instruccion, SqlParameter[] parametros)
         {
             var resultados = new DatosClienteMetodos();
@@ -161,7 +165,7 @@ namespace RegistroClientes.Modelo
                             {
                                 while (reader.Read())
                                 {
-                                    //se guradan los datos
+                                    //se guardan los datos
                                     resultados.Id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
                                     resultados.Nombre = reader.IsDBNull(1) ? "vacío" : reader.GetString(1);
                                     resultados.Correo = reader.IsDBNull(2) ? "vacío" : reader.GetString(2);
@@ -176,7 +180,7 @@ namespace RegistroClientes.Modelo
                             else
                             {
                                 resultados.Errores = "No se encontraron datos.";
-                            }
+                            }  
                         }
                     }
                 }
@@ -211,7 +215,7 @@ namespace RegistroClientes.Modelo
                         {
                             //para insertar devuelve el Id que le corresponde al nuevo campo
                             object idGenerado = comando.ExecuteScalar();
-                            return idGenerado != null ? $"Insertado con ID: {idGenerado}" : "No se pudo obtener el ID insertado.";
+                            return idGenerado != null ? $"{idGenerado}" : "No se pudo obtener el ID insertado.";
                         }
                         else
                         {
