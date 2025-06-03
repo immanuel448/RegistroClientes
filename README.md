@@ -32,11 +32,13 @@ Una aplicación de escritorio en **C#** que permite gestionar clientes mediante 
 ---
 
 ## 🧱 Estructura del proyecto
+```
 /RegistroClientes
 ├── /Controlador
 │ └── FormController.cs
 ├── /Modelo
 │ └── DatosClienteMetodos.cs
+│ └── DatosClientes.cs
 ├── /Vista
 │ └── Form1.cs
 ├── /Assets
@@ -44,7 +46,7 @@ Una aplicación de escritorio en **C#** que permite gestionar clientes mediante 
 │ └── formulario-edicion.png
 │ └── validaciones.png
 └── README.md
-
+```
 ---
 
 ## ⚙️ Tecnologías utilizadas
@@ -83,7 +85,4 @@ Una aplicación de escritorio en **C#** que permite gestionar clientes mediante 
 *Ingeniero en Desarrollo de Softare con enfoque en desarrollo de software funcional y estético.*
 
 ---
-
-> 🎨 *Consejo visual:* Usa íconos sutiles, colores neutros y márgenes consistentes para que la interfaz sea limpia y profesional. Agrega capturas con bordes redondeados para destacar la estética
-
 
