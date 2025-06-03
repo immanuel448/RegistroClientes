@@ -60,6 +60,7 @@ namespace RegistroClientes
                 {
                     // Revertir la selección si el usuario cancela
                     radioNo.Checked = false;
+                    radioSi.Checked = true;
                 }
             }
         }

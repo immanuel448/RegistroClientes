@@ -68,7 +68,7 @@
             // 
             tituloCliente.AutoSize = true;
             tituloCliente.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tituloCliente.Location = new Point(24, 9);
+            tituloCliente.Location = new Point(122, 9);
             tituloCliente.Name = "tituloCliente";
             tituloCliente.Size = new Size(227, 32);
             tituloCliente.TabIndex = 0;
@@ -248,14 +248,14 @@
             grupoSexo.Controls.Add(radioSexoH);
             grupoSexo.Location = new Point(111, 352);
             grupoSexo.Name = "grupoSexo";
-            grupoSexo.Size = new Size(321, 43);
+            grupoSexo.Size = new Size(331, 43);
             grupoSexo.TabIndex = 23;
             grupoSexo.TabStop = false;
             // 
             // radioSexoSin
             // 
             radioSexoSin.AutoSize = true;
-            radioSexoSin.Location = new Point(210, 17);
+            radioSexoSin.Location = new Point(225, 17);
             radioSexoSin.Name = "radioSexoSin";
             radioSexoSin.Size = new Size(100, 19);
             radioSexoSin.TabIndex = 25;
@@ -266,7 +266,7 @@
             // radioSexoM
             // 
             radioSexoM.AutoSize = true;
-            radioSexoM.Location = new Point(115, 17);
+            radioSexoM.Location = new Point(119, 17);
             radioSexoM.Name = "radioSexoM";
             radioSexoM.Size = new Size(56, 19);
             radioSexoM.TabIndex = 24;
