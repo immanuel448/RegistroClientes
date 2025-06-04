@@ -34,7 +34,7 @@ namespace RegistroClientes.Controlador
                         case "id":
                             erroresDict[_vista.txtID] = mensajeUnido;
                             break;
-                        case "activo":
+                        case "activo"://eeee
                             erroresDict[_vista.groupActivo] = mensajeUnido;
                             break;
                         case "nombre":
@@ -73,6 +73,7 @@ namespace RegistroClientes.Controlador
             switch (datosDelFormulario.Accion)
             {
                 case "Buscar":
+                    //eeeee
                     instruccion = "SELECT * FROM Clientes WHERE id = @id AND activo = 1";
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
@@ -114,7 +115,6 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
                     parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
-                    //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
 
                     if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
                     {
@@ -135,7 +135,7 @@ namespace RegistroClientes.Controlador
                     break;
 
                 case "Actualizar":
-
+                    //eeeee
                     instruccion = "UPDATE Clientes SET nombre = @nombre, correo = @correo, contrasenha = @contrasenha, telefono = @telefono, direccion = @direccion, fechaNaci = @fechaNaci, sexo =@sexo, activo = @activo WHERE id = @id";
 
                     parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));

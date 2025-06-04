@@ -39,7 +39,7 @@ namespace RegistroClientes.Modelo
 
             if (accion == "Insertar" || accion == "Actualizar")
             {
-                //activo
+                //activo eeeee
                 if (Activo == null)
                 {
                     errores["activo"] = new List<string> { "Debe seleccionar una opción para el campo activo." };
@@ -181,6 +181,7 @@ namespace RegistroClientes.Modelo
                                     resultados.Direccion = reader.IsDBNull(5) ? "vacío" : reader.GetString(5);
                                     resultados.FechaNaci = reader.IsDBNull(6) ? default : reader.GetDateTime(6);
                                     resultados.Sexo = reader.IsDBNull(7) ? "vacío" : reader.GetString(7);
+                                    //eeee
                                     resultados.Activo = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
                                 }
                             }

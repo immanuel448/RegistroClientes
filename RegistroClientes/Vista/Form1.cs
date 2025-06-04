@@ -173,7 +173,7 @@ namespace RegistroClientes
                 datosCliente.Sexo = null;
             }
 
-            //activo
+            //activo eeeee
             if (radioSi.Checked)
             {
                 datosCliente.Activo = true;
