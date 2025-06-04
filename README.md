@@ -22,11 +22,11 @@ Una aplicación de escritorio en **C#** que permite gestionar clientes mediante 
 <!-- Aquí puedes mostrar la ventana principal de la aplicación -->
 
 ### ✍️ Formulario de edición
-![Formulario de edición](Assets/formulario-edicion.png)
+![Formulario de edición](RegistroClientes/Assets/formulario-edicion.png)
 <!-- Muestra los campos para editar cliente -->
 
 ### 🧪 Validaciones en acción
-![Validaciones](Assets/validaciones.png)
+![Validaciones](RegistroClientes/Assets/validaciones.png)
 <!-- Imagen de campos con errores y el ErrorProvider activo -->
 
 ---
