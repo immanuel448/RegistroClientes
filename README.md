@@ -18,7 +18,7 @@ Una aplicación de escritorio en **C#** que permite gestionar clientes mediante 
 ## 🖼️ Vista previa
 
 ### 🌟 Pantalla principal
-![Pantalla principal](Assets/pantalla-principal.png)
+![Pantalla principal](RegistroClientes/Assets/pantalla-principal.png)
 <!-- Aquí puedes mostrar la ventana principal de la aplicación -->
 
 ### ✍️ Formulario de edición
