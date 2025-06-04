@@ -1,5 +1,6 @@
 ﻿// Controlador
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using RegistroClientes.Modelo;
@@ -102,10 +103,40 @@ namespace RegistroClientes.Controlador
                     }
                     break;
 
-                case "Insertar":
-                    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo) " +
-                                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo, @activo)";
+                //case "Insertar":
+                //    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo) " +
+                //                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo, @activo)";
 
+                //    parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
+                //    parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
+                //    parametros.Add(new SqlParameter("@contrasenha", datosDelFormulario.Contrasenha));
+                //    parametros.Add(new SqlParameter("@telefono", datosDelFormulario.Telefono));
+                //    parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
+                //    parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
+                //    parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
+                //    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
+                //    //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
+
+                //    if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
+                //    {
+                //        stringResultadoBD = datosDelFormulario.Modificar_guardar(
+                //            "Insertar",
+                //            datosDelFormulario.datosBD(),
+                //            instruccion,
+                //            parametros.ToArray()
+                //        );
+                //    }
+                //    else
+                //    {
+                //        _vista.Mensaje("Error con los datos para conectar con la BD");
+                //    }
+
+                //    _vista.Mensaje($"Datos insertados con el ID: " + stringResultadoBD);
+                //    _vista.txtID.Text = stringResultadoBD;
+                //    break;
+
+                case "Insertar":
+                    instruccion = "sp_InsertarCliente"; // nombre del SP
                     parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
                     parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
                     parametros.Add(new SqlParameter("@contrasenha", datosDelFormulario.Contrasenha));
@@ -114,7 +145,13 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
                     parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
-                    //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
+
+                    // Este es el parámetro de salida
+                    SqlParameter parametroSalida = new SqlParameter("@nuevoId", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    parametros.Add(parametroSalida);
 
                     if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
                     {
@@ -122,7 +159,8 @@ namespace RegistroClientes.Controlador
                             "Insertar",
                             datosDelFormulario.datosBD(),
                             instruccion,
-                            parametros.ToArray()
+                            parametros.ToArray(),
+                            true // <- este nuevo argumento indica que es un SP
                         );
                     }
                     else
@@ -133,6 +171,7 @@ namespace RegistroClientes.Controlador
                     _vista.Mensaje($"Datos insertados con el ID: " + stringResultadoBD);
                     _vista.txtID.Text = stringResultadoBD;
                     break;
+
 
                 case "Actualizar":
 
