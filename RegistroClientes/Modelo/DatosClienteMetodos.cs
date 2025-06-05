@@ -196,7 +196,7 @@ namespace RegistroClientes.Modelo
         }
 
         //Método común para Create, Update y Delete
-        public string Modificar_guardar(string accion, string datosBD, string instruccion, SqlParameter[] parametros, bool esProcedimientoAlmacenado = false)
+        public string Modificar_guardar(string accion, string datosBD, string instruccion, SqlParameter[] parametros)
         {
             string errores = null;
             try
@@ -204,21 +204,24 @@ namespace RegistroClientes.Modelo
                 using (SqlConnection conexion = new SqlConnection(datosBD))
                 {
                     conexion.Open();
+
+                    // Si es Insertar, se agrega la instrucción para obtener el ID generado
+                    if (accion == "Insertar")
+                        instruccion += "; SELECT SCOPE_IDENTITY();";
+
                     using (SqlCommand comando = new SqlCommand(instruccion, conexion))
                     {
-                        if (esProcedimientoAlmacenado)
-                            comando.CommandType = CommandType.StoredProcedure;
-
                         comando.Parameters.AddRange(parametros);
 
                         if (accion == "Insertar")
                         {
-                            comando.ExecuteNonQuery();
-                            var idGenerado = comando.Parameters["@nuevoId"].Value;
+                            //para insertar devuelve el Id que le corresponde al nuevo campo
+                            object idGenerado = comando.ExecuteScalar();
                             return idGenerado != null ? $"{idGenerado}" : "No se pudo obtener el ID insertado.";
                         }
                         else
                         {
+                            //para borrar, actualizar
                             int resultadoConsulta = comando.ExecuteNonQuery();
                             return resultadoConsulta > 0
                                 ? $"Éxito al {accion.ToLower()}"
