@@ -35,9 +35,6 @@ namespace RegistroClientes.Controlador
                         case "id":
                             erroresDict[_vista.txtID] = mensajeUnido;
                             break;
-                        case "activo":
-                            erroresDict[_vista.groupActivo] = mensajeUnido;
-                            break;
                         case "nombre":
                             erroresDict[_vista.txtNombreCli] = mensajeUnido;
                             break;
@@ -74,7 +71,7 @@ namespace RegistroClientes.Controlador
             switch (datosDelFormulario.Accion)
             {
                 case "Buscar":
-                    instruccion = "SELECT * FROM Clientes WHERE id = @id AND activo = 1";
+                    instruccion = "SELECT * FROM Clientes WHERE id = @id";
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
                     if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
@@ -103,40 +100,10 @@ namespace RegistroClientes.Controlador
                     }
                     break;
 
-                //case "Insertar":
-                //    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo) " +
-                //                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo, @activo)";
-
-                //    parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
-                //    parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
-                //    parametros.Add(new SqlParameter("@contrasenha", datosDelFormulario.Contrasenha));
-                //    parametros.Add(new SqlParameter("@telefono", datosDelFormulario.Telefono));
-                //    parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
-                //    parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
-                //    parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
-                //    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
-                //    //parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
-
-                //    if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
-                //    {
-                //        stringResultadoBD = datosDelFormulario.Modificar_guardar(
-                //            "Insertar",
-                //            datosDelFormulario.datosBD(),
-                //            instruccion,
-                //            parametros.ToArray()
-                //        );
-                //    }
-                //    else
-                //    {
-                //        _vista.Mensaje("Error con los datos para conectar con la BD");
-                //    }
-
-                //    _vista.Mensaje($"Datos insertados con el ID: " + stringResultadoBD);
-                //    _vista.txtID.Text = stringResultadoBD;
-                //    break;
-
                 case "Insertar":
-                    instruccion = "sp_InsertarCliente"; // nombre del SP
+                    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo) " +
+                                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo, @activo)";
+
                     parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
                     parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
                     parametros.Add(new SqlParameter("@contrasenha", datosDelFormulario.Contrasenha));
@@ -146,21 +113,13 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
                     parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
 
-                    // Este es el parámetro de salida
-                    SqlParameter parametroSalida = new SqlParameter("@nuevoId", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    parametros.Add(parametroSalida);
-
                     if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
                     {
                         stringResultadoBD = datosDelFormulario.Modificar_guardar(
                             "Insertar",
                             datosDelFormulario.datosBD(),
                             instruccion,
-                            parametros.ToArray(),
-                            true // <- este nuevo argumento indica que es un SP
+                            parametros.ToArray()
                         );
                     }
                     else
@@ -171,7 +130,6 @@ namespace RegistroClientes.Controlador
                     _vista.Mensaje($"Datos insertados con el ID: " + stringResultadoBD);
                     _vista.txtID.Text = stringResultadoBD;
                     break;
-
 
                 case "Actualizar":
 
@@ -205,7 +163,7 @@ namespace RegistroClientes.Controlador
 
                 case "Borrar":
 
-                    instruccion = "UPDATE Clientes SET activo = 0 WHERE id = @id";
+                    instruccion = "DELETE FROM Clientes WHERE id = @id";
 
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
@@ -250,16 +208,6 @@ namespace RegistroClientes.Controlador
                 else if (datosRecibidos.Sexo == "Sin Espe")
                 {
                     _vista.radioSexoSin.Checked = true;
-                }
-
-                //activo
-                if (datosRecibidos.Activo == true)
-                {
-                    _vista.radioSi.Checked = true;
-                }
-                else if (datosRecibidos.Activo == false)
-                {
-                    _vista.radioNo.Checked = true;
                 }
 
                 _vista.Mensaje($"El dato {datosRecibidos.Id} ha sido encontrado con éxito");

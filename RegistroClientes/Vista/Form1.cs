@@ -15,13 +15,11 @@ namespace RegistroClientes
             InitializeComponent();
             txtID.TextChanged += TxtID_TextChanged;//revisa cambios en este elemento
             TxtID_TextChanged(txtID, EventArgs.Empty); // Llamada manual para evaluar estado inicial
-            radioNo.CheckedChanged += RadioNo_CheckedChanged;//revisa cambios en este elemento
             _controller = new FormController(this);  // Inicializamos el controlador
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // buuu!!!
         }
 
 
@@ -40,27 +38,6 @@ namespace RegistroClientes
                 {
                     btnBuscar.Enabled = false;
                     btnBorrar.Enabled = false;
-                }
-            }
-        }
-
-        private void RadioNo_CheckedChanged(object sender, EventArgs e)
-        {
-            // Solo actuar si el botón fue marcado (no cuando se desmarca)
-            if (radioNo.Checked)
-            {
-                var confirmacion = MessageBox.Show(
-                    "¿Estás seguro de que deseas marcar este registro como inactivo?",
-                    "Confirmar acción",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                );
-
-                if (confirmacion == DialogResult.No)
-                {
-                    // Revertir la selección si el usuario cancela
-                    radioNo.Checked = false;
-                    radioSi.Checked = true;
                 }
             }
         }
@@ -171,20 +148,6 @@ namespace RegistroClientes
             else
             {
                 datosCliente.Sexo = null;
-            }
-
-            //activo
-            if (radioSi.Checked)
-            {
-                datosCliente.Activo = true;
-            }
-            else if (radioNo.Checked)
-            {
-                datosCliente.Activo = false;
-            }
-            else
-            {
-                datosCliente.Activo = null;
             }
 
             //Acción

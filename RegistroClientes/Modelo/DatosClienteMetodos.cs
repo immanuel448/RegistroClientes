@@ -40,11 +40,6 @@ namespace RegistroClientes.Modelo
 
             if (accion == "Insertar" || accion == "Actualizar")
             {
-                //activo
-                if (Activo == null)
-                {
-                    errores["activo"] = new List<string> { "Debe seleccionar una opción para el campo activo." };
-                }
 
                 // nombre
                 if (string.IsNullOrEmpty(Nombre))

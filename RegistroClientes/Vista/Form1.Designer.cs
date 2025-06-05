@@ -55,13 +55,8 @@
             radioSexoH = new RadioButton();
             lblID = new Label();
             txtID = new TextBox();
-            lblActivo = new Label();
-            radioSi = new RadioButton();
-            radioNo = new RadioButton();
-            groupActivo = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)erroresMSJ).BeginInit();
             grupoSexo.SuspendLayout();
-            groupActivo.SuspendLayout();
             SuspendLayout();
             // 
             // tituloCliente
@@ -212,7 +207,7 @@
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(140, 61);
+            btnBuscar.Location = new Point(382, 63);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(60, 23);
             btnBuscar.TabIndex = 17;
@@ -289,7 +284,7 @@
             // 
             lblID.AutoSize = true;
             lblID.Font = new Font("Microsoft Sans Serif", 12F);
-            lblID.Location = new Point(22, 64);
+            lblID.Location = new Point(264, 66);
             lblID.Name = "lblID";
             lblID.Size = new Size(42, 20);
             lblID.TabIndex = 24;
@@ -297,52 +292,10 @@
             // 
             // txtID
             // 
-            txtID.Location = new Point(70, 61);
+            txtID.Location = new Point(312, 63);
             txtID.Name = "txtID";
             txtID.Size = new Size(63, 23);
             txtID.TabIndex = 25;
-            // 
-            // lblActivo
-            // 
-            lblActivo.AutoSize = true;
-            lblActivo.Font = new Font("Microsoft Sans Serif", 12F);
-            lblActivo.Location = new Point(249, 60);
-            lblActivo.Name = "lblActivo";
-            lblActivo.Size = new Size(56, 20);
-            lblActivo.TabIndex = 26;
-            lblActivo.Text = "Activo:";
-            // 
-            // radioSi
-            // 
-            radioSi.AutoSize = true;
-            radioSi.Location = new Point(17, 17);
-            radioSi.Name = "radioSi";
-            radioSi.Size = new Size(34, 19);
-            radioSi.TabIndex = 23;
-            radioSi.TabStop = true;
-            radioSi.Text = "Sí";
-            radioSi.UseVisualStyleBackColor = true;
-            // 
-            // radioNo
-            // 
-            radioNo.AutoSize = true;
-            radioNo.Location = new Point(69, 17);
-            radioNo.Name = "radioNo";
-            radioNo.Size = new Size(41, 19);
-            radioNo.TabIndex = 24;
-            radioNo.TabStop = true;
-            radioNo.Text = "No";
-            radioNo.UseVisualStyleBackColor = true;
-            // 
-            // groupActivo
-            // 
-            groupActivo.Controls.Add(radioNo);
-            groupActivo.Controls.Add(radioSi);
-            groupActivo.Location = new Point(321, 41);
-            groupActivo.Name = "groupActivo";
-            groupActivo.Size = new Size(121, 43);
-            groupActivo.TabIndex = 26;
-            groupActivo.TabStop = false;
             // 
             // Form1
             // 
@@ -350,8 +303,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoValidate = AutoValidate.EnablePreventFocusChange;
             ClientSize = new Size(467, 459);
-            Controls.Add(groupActivo);
-            Controls.Add(lblActivo);
             Controls.Add(txtID);
             Controls.Add(lblID);
             Controls.Add(grupoSexo);
@@ -382,8 +333,6 @@
             ((System.ComponentModel.ISupportInitialize)erroresMSJ).EndInit();
             grupoSexo.ResumeLayout(false);
             grupoSexo.PerformLayout();
-            groupActivo.ResumeLayout(false);
-            groupActivo.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -416,9 +365,5 @@
         internal RadioButton radioSexoH;
         internal TextBox txtID;
         internal Label lblID;
-        internal Label lblActivo;
-        internal GroupBox groupActivo;
-        internal RadioButton radioNo;
-        internal RadioButton radioSi;
     }
 }
