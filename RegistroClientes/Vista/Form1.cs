@@ -167,7 +167,6 @@ namespace RegistroClientes
                 $"direccion {datosCliente.Direccion}\n" +
                 $"sexo {datosCliente.Sexo}\n" +
                 $"fecha {datosCliente.FechaNaci}\n" +
-                $"activo {datosCliente.Activo}\n" +
                 $"accion {datosCliente.Accion}\n");
         }
 

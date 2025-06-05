@@ -101,8 +101,8 @@ namespace RegistroClientes.Controlador
                     break;
 
                 case "Insertar":
-                    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo) " +
-                                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo, @activo)";
+                    instruccion = "INSERT INTO Clientes (nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo) " +
+                                  "VALUES (@nombre, @correo, @contrasenha, @telefono, @direccion, @fechaNaci, @sexo)";
 
                     parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
                     parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
@@ -111,7 +111,6 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
                     parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
-                    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
 
                     if (datosDelFormulario.datosBD() != "Error con los datos para conectar con la BD")
                     {
@@ -133,7 +132,7 @@ namespace RegistroClientes.Controlador
 
                 case "Actualizar":
 
-                    instruccion = "UPDATE Clientes SET nombre = @nombre, correo = @correo, contrasenha = @contrasenha, telefono = @telefono, direccion = @direccion, fechaNaci = @fechaNaci, sexo =@sexo, activo = @activo WHERE id = @id";
+                    instruccion = "UPDATE Clientes SET nombre = @nombre, correo = @correo, contrasenha = @contrasenha, telefono = @telefono, direccion = @direccion, fechaNaci = @fechaNaci, sexo =@sexo  WHERE id = @id";
 
                     parametros.Add(new SqlParameter("@nombre", datosDelFormulario.Nombre));
                     parametros.Add(new SqlParameter("@correo", datosDelFormulario.Correo));
@@ -142,7 +141,6 @@ namespace RegistroClientes.Controlador
                     parametros.Add(new SqlParameter("@direccion", datosDelFormulario.Direccion));
                     parametros.Add(new SqlParameter("@fechaNaci", datosDelFormulario.FechaNaci));
                     parametros.Add(new SqlParameter("@sexo", datosDelFormulario.Sexo));
-                    parametros.Add(new SqlParameter("@activo", datosDelFormulario.Activo));
                     parametros.Add(new SqlParameter("@id", datosDelFormulario.Id));
 
 

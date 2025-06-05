@@ -14,7 +14,7 @@ namespace RegistroClientes.Modelo
     public class DatosClienteMetodos : DatosClientes
     {
 
-        internal DatosClienteMetodos(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", bool activo = false, string accion = "", string errores = null) : base (id, nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo, activo, accion, errores){}
+        internal DatosClienteMetodos(int id = 0, string nombre = "", string correo = "", string contrasenha = "", string telefono = "", string direccion = "", DateTime fechaNaci = default, string sexo = "", string accion = "", string errores = null) : base (id, nombre, correo, contrasenha, telefono, direccion, fechaNaci, sexo,  accion, errores){}
 
         public bool EsValido(out Dictionary<string, List<string>> errores, string accion)
         {
@@ -177,7 +177,6 @@ namespace RegistroClientes.Modelo
                                     resultados.Direccion = reader.IsDBNull(5) ? "vacío" : reader.GetString(5);
                                     resultados.FechaNaci = reader.IsDBNull(6) ? default : reader.GetDateTime(6);
                                     resultados.Sexo = reader.IsDBNull(7) ? "vacío" : reader.GetString(7);
-                                    resultados.Activo = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
                                 }
                             }
                             else
